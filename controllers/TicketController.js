@@ -30,3 +30,46 @@ exports.createTicket = (req, res) => {
         res.render('confirmation', { ticketId: result.insertId });
     });
 };
+
+exports.viewNewTickets = (req, res) => {
+    if (!req.session.userId) return res.redirect('/login');
+
+    // ดึงข้อมูล Ticket ที่มีสถานะเป็น 'NEW'
+    Ticket.getNewTickets((err, tickets) => {
+        if (err) return res.send('Error fetching tickets');
+        res.render('newTickets', { tickets });
+    });
+};
+
+exports.assignTicket = (req, res) => {
+    if (!req.session.userId) return res.redirect('/login');  // ตรวจสอบว่ามีการล็อกอินแล้ว
+
+    const { ticketId } = req.body;
+    const assignedBy = req.session.userId;  // บันทึก userId ของผู้ทำการ Assign
+
+    Ticket.assign(ticketId, assignedBy, (err, result) => {
+        if (err) return res.status(500).send('Error assigning ticket');
+        res.send('Ticket assigned successfully!');
+    });
+};
+
+
+exports.getTicketList = (req, res) => {
+    const userId = req.session.userId; // ดึง userId จาก session
+    Ticket.fetchTicketsForUser(userId, (err, tickets) => {
+        if (err) {
+            return res.status(500).send('Error fetching tickets');
+        }
+        res.render('track_ticket', { tickets });
+    });
+};
+
+exports.getTicketDetails = (req, res) => {
+    const ticketId = req.params.ticketId;
+    Ticket.fetchTicketStatus(ticketId, (err, ticket) => {
+        if (err || !ticket) {
+            return res.status(404).send('Ticket not found');
+        }
+        res.render('ticket_details', { ticket });
+    });
+};

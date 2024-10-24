@@ -1,0 +1,29 @@
+<!-- views/newTickets.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Tickets</title>
+    <link rel="stylesheet" href="/styles.css"> <!-- เชื่อมโยง CSS -->
+</head>
+<body>
+    <h1>New Tickets</h1>
+    <ul>
+        <% tickets.forEach(ticket => { %>
+            <li>
+                <strong><%= ticket.description %></strong> 
+                <p>Status: <%= ticket.status %></p>
+                <p>Assigned By: <%= ticket.assignedBy || 'Not Assigned' %></p>
+
+                <% if (ticket.status === 'NEW') { %>
+                    <form action="/tickets/assign" method="POST">
+                        <input type="hidden" name="ticketId" value="<%= ticket.ticketId %>">
+                        <button type="submit">Assign</button>
+                    </form>
+                <% } %>
+            </li>
+        <% }) %>
+    </ul>
+</body>
+</html>

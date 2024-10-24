@@ -22,7 +22,7 @@ exports.login = (req, res) => {
                     return res.send('Error fetching permissions');
                 }
                 req.session.permissions = permissions.map(p => p.permissionName);
-                res.redirect('/submit-ticket');
+                res.redirect('/');
             });
         });
     });
