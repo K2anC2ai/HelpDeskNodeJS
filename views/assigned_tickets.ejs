@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assigned Tickets</title>
+    <link rel="stylesheet" href="/path/to/your/css/style.css"> <!-- ลิงก์ไปยัง CSS ของคุณ -->
+</head>
+<body>
+    <h1>Assigned Tickets</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Ticket ID</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% tickets.forEach(ticket => { %>
+                <tr>
+                    <td><%= ticket.ticketId %></td>
+                    <td><%= ticket.description %></td>
+                    <td>
+                        <!-- แสดงสถานะ -->
+                        <%= ticket.status === 'In Progress' ? 'In Progress' : ticket.status %>
+                    </td>
+                    <td>
+                        <!-- แสดงปุ่มสำหรับเริ่มแก้ปัญหา -->
+                        <% if (ticket.status !== 'Resolved') { %>
+                            <form action="/tickets/<%= ticket.ticketId %>/solve" method="POST" style="display:inline;">
+                                <button type="submit" <% if (ticket.status === 'In Progress') { %> disabled <% } %>>Start Problem Solving</button>
+                            </form>
+                        <% } %>
+                        <!-- แสดงฟอร์มสำหรับการแก้ไขปัญหา -->
+                        <form action="/tickets/<%= ticket.ticketId %>/resolve" method="POST" style="display:inline;">
+                            <input type="text" name="solution" placeholder="Enter solution" required>
+                            <button type="submit" <% if (ticket.status !== 'In Progress') { %> disabled <% } %>>Resolve Ticket</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>

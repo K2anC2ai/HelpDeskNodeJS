@@ -34,4 +34,15 @@ router.get('/search-articles', KnowledgeBaseController.searchArticles);
 
 router.get('/generate-report',authorize('GenReport'), ReportController.generateReport);
 
+
+
+router.post('/tickets/:ticketId/solve', TicketController.startProblemSolving);
+
+// Route สำหรับบันทึกการแก้ไขปัญหาเสร็จ
+router.post('/tickets/:ticketId/resolve', TicketController.resolveTicket);
+
+
+router.get('/tickets/assigned', TicketController.getAssignedTickets);
+
+
 module.exports = router;

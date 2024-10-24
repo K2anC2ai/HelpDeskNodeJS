@@ -73,3 +73,47 @@ exports.getTicketDetails = (req, res) => {
         res.render('ticket_details', { ticket });
     });
 };
+
+
+exports.startProblemSolving = (req, res) => {
+    const ticketId = req.params.ticketId; // รับ ticketId จากพารามิเตอร์ URL
+
+    // เปลี่ยนสถานะเป็น "In Progress"
+    Ticket.markTicketInProgress(ticketId, (err) => {
+        if (err) {
+            return res.status(500).send('Error marking ticket as in progress');
+        }
+
+        // แจ้งผู้ใช้ว่าการแก้ปัญหากำลังดำเนินการ
+        res.send('Ticket is now in progress. You can start solving it.');
+    });
+};
+
+// ฟังก์ชันสำหรับบันทึกการแก้ไขปัญหาเสร็จ
+exports.resolveTicket = (req, res) => {
+    const ticketId = req.params.ticketId; // รับ ticketId จากพารามิเตอร์ URL
+    const solution = req.body.solution; // รับการแก้ไขปัญหาจากฟอร์ม
+
+    // เรียกใช้ฟังก์ชัน resolveTicket เพื่อบันทึกการแก้ไขในฐานข้อมูล
+    Ticket.resolveTicket(ticketId, solution, (err, result) => {
+        if (err) {
+            return res.status(500).send('Error resolving ticket');
+        }
+
+        // แจ้งผู้ใช้ว่าตั๋วคำขอได้รับการแก้ไข
+        res.send('Ticket has been resolved successfully. User has been notified.');
+    });
+};
+
+
+exports.getAssignedTickets = (req, res) => {
+    const userId = req.session.userId; // ดึง userId จาก session
+
+    Ticket.getAssignedTickets(userId, (err, tickets) => {
+        if (err) {
+            return res.status(500).send('Error fetching assigned tickets');
+        }
+
+        res.render('assigned_tickets', { tickets });
+    });
+};

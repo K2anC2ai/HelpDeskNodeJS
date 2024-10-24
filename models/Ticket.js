@@ -36,6 +36,21 @@ class Ticket {
             callback(err, results[0]);
         });
     }
+    static markTicketInProgress(ticketId, callback) {
+        const sql = 'UPDATE ticket SET status = ? WHERE ticketId = ?';
+        db.query(sql, ['In Progress', ticketId], callback);
+    }
+
+    // ฟังก์ชันสำหรับบันทึกการแก้ไขปัญหาเสร็จ
+    static resolveTicket(ticketId, solution, callback) {
+        const sql = 'UPDATE ticket SET status = ?, solution = ? WHERE ticketId = ?';
+        db.query(sql, ['Resolved', solution, ticketId], callback);
+    }
+    static getAssignedTickets(userId, callback) {
+        const sql = 'SELECT * FROM ticket WHERE assignedBy  = ?'; // สมมุติว่าใช้ `assignedTo` เพื่อเก็บ userId ของเจ้าหน้าที่
+        db.query(sql, [userId], callback);
+    }
+
 }
 
 module.exports = Ticket;
