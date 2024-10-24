@@ -12,8 +12,8 @@ const KnowledgeBaseController = require('../controllers/KnowledgeBaseController'
 router.get('/login', (req, res) => res.render('login'));
 router.post('/login', AuthController.login);
 router.get('/logout', AuthController.logout);
-router.get('/submit-ticket', TicketController.submitTicket);
-router.post('/submit-ticket', TicketController.createTicket);
+router.get('/submit-ticket', authorize('Create Ticket'),TicketController.submitTicket);
+router.post('/submit-ticket', authorize('Create Ticket'),TicketController.createTicket);
 // แสดงรายการ Ticket ใหม่ (ต้องมีสิทธิ์ 'Assign Ticket')
 router.get('/tickets/new', authorize('Assign Ticket'), TicketController.viewNewTickets);
 
