@@ -4,12 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assigned Tickets</title>
-    <link rel="stylesheet" href="/path/to/your/css/style.css"> <!-- ลิงก์ไปยัง CSS ของคุณ -->
+    <link rel="stylesheet" href="/styles.css"> <!-- เชื่อมโยง CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        select {
+            padding: 8px;
+            margin-left: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 8px 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .action-form {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        input[type="text"] {
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/tickets/new">New Ticket</a>
+        <a href="/logout">Logout</a>
+      </nav>
     <h1>Assigned Tickets</h1>
 
-    <table>
+    <!-- Dropdown สำหรับเลือกสถานะ -->
+    <label for="statusFilter">Filter by Status:</label>
+    <select id="statusFilter">
+        <option value="All">All</option>
+        <option value="Assigned">Assigned</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Resolved">Resolved</option>
+        <option value="Closed">Closed</option>
+    </select>
+
+    <table id="ticketsTable">
         <thead>
             <tr>
                 <th>Ticket ID</th>
@@ -20,22 +112,19 @@
         </thead>
         <tbody>
             <% tickets.forEach(ticket => { %>
-                <tr>
+                <tr class="ticket-row" data-status="<%= ticket.status %>">
                     <td><%= ticket.ticketId %></td>
                     <td><%= ticket.description %></td>
                     <td>
-                        <!-- แสดงสถานะ -->
                         <%= ticket.status === 'In Progress' ? 'In Progress' : ticket.status %>
                     </td>
                     <td>
-                        <!-- แสดงปุ่มสำหรับเริ่มแก้ปัญหา -->
                         <% if (ticket.status !== 'Resolved') { %>
-                            <form action="/tickets/<%= ticket.ticketId %>/solve" method="POST" style="display:inline;">
+                            <form action="/tickets/<%= ticket.ticketId %>/solve" method="POST" class="action-form">
                                 <button type="submit" <% if (ticket.status === 'In Progress') { %> disabled <% } %>>Start Problem Solving</button>
                             </form>
                         <% } %>
-                        <!-- แสดงฟอร์มสำหรับการแก้ไขปัญหา -->
-                        <form action="/tickets/<%= ticket.ticketId %>/resolve" method="POST" style="display:inline;">
+                        <form action="/tickets/<%= ticket.ticketId %>/resolve" method="POST" class="action-form">
                             <input type="text" name="solution" placeholder="Enter solution" required>
                             <button type="submit" <% if (ticket.status !== 'In Progress') { %> disabled <% } %>>Resolve Ticket</button>
                         </form>
@@ -44,5 +133,22 @@
             <% }); %>
         </tbody>
     </table>
+
+    <script>
+        // ฟังก์ชันสำหรับกรองตั๋วคำขอตามสถานะ
+        document.getElementById('statusFilter').addEventListener('change', function() {
+            const selectedStatus = this.value;
+            const ticketRows = document.querySelectorAll('.ticket-row');
+
+            ticketRows.forEach(row => {
+                const ticketStatus = row.getAttribute('data-status');
+                if (selectedStatus === 'All' || ticketStatus === selectedStatus) {
+                    row.classList.remove('hidden');
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

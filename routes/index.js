@@ -45,4 +45,5 @@ router.post('/tickets/:ticketId/resolve', TicketController.resolveTicket);
 router.get('/tickets/assigned', TicketController.getAssignedTickets);
 
 
+
 module.exports = router;
