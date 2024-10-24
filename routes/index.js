@@ -6,6 +6,7 @@ const TicketController = require('../controllers/TicketController');
 const authorize = require('../middlewares/authorize');
 const dashboardController = require('../controllers/DashboardController');
 const KnowledgeBaseController = require('../controllers/KnowledgeBaseController');
+const ReportController = require('../controllers/ReportController');
 
 
 
@@ -30,5 +31,7 @@ router.get('/knowledge-base', (req, res) => {
 });
 
 router.get('/search-articles', KnowledgeBaseController.searchArticles);
+
+router.get('/generate-report',authorize('GenReport'), ReportController.generateReport);
 
 module.exports = router;

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <title>Generate Report</title>
+</head>
+<body>
+    <h1>Report Statistics</h1>
+    <table>
+        <tr>
+            <th>Total Tickets</th>
+            <th>Assigned Tickets</th>
+            <th>Resolved Tickets</th>
+            <th>Closed Tickets</th>
+        </tr>
+        <tr>
+            <td><%= stats.totalTickets %></td>
+            <td><%= stats.assignedTickets %></td>
+            <td><%= stats.resolvedTickets %></td>
+            <td><%= stats.closedTickets %></td>
+        </tr>
+    </table>
+</body>
+</html>
