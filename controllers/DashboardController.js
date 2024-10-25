@@ -64,6 +64,8 @@ exports.getDashboard = (req, res) => {
                 res.render('user_index', { user: req.session });
             } else if (roleName === 'Staff') {
                 res.render('staff_index', { user: req.session });
+            } else if (roleName === 'Admin') {
+                res.render('admin_index', { user: req.session });
             } else {
                 res.status(403).send('Access denied');
             }

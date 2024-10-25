@@ -7,6 +7,7 @@ const authorize = require('../middlewares/authorize');
 const dashboardController = require('../controllers/DashboardController');
 const KnowledgeBaseController = require('../controllers/KnowledgeBaseController');
 const ReportController = require('../controllers/ReportController');
+const UserController = require('../controllers/UserController');
 
 
 
@@ -45,9 +46,18 @@ router.post('/tickets/:ticketId/resolve', TicketController.resolveTicket);
 router.get('/tickets/assigned', TicketController.getAssignedTickets);
 
 
-router.get('/user-management', UserController.getUserList);
-router.post('/user-management/add', UserController.addUser);
-router.post('/user-management/edit/:userId', UserController.editUser);
-router.post('/user-management/delete/:userId', UserController.deleteUser);
+
+router.get('/users', authorize('ManageUsers'), UserController.getUserList);
+
+// ฟอร์มเพิ่มผู้ใช้ใหม่
+router.get('/users/add', authorize('ManageUsers'), UserController.getAddUserForm);
+router.post('/users/add', authorize('ManageUsers'), UserController.addUser);
+
+// ฟอร์มแก้ไขผู้ใช้
+router.get('/users/edit/:userId', authorize('ManageUsers'), UserController.getUserById);
+router.post('/users/edit/:userId', authorize('ManageUsers'), UserController.updateUser);
+
+// ลบผู้ใช้
+router.post('/users/delete/:userId', authorize('ManageUsers'), UserController.deleteUser);
 
 module.exports = router;
