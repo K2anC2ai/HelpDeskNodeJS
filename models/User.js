@@ -65,11 +65,40 @@ class User {
     }
 
     // แก้ไขข้อมูลผู้ใช้
-    static updateUser(userId, userData, callback) {
-        const { username, roleId } = userData;
-        db.query('UPDATE user SET username = ?, roleId = ? WHERE userId = ?',
-            [username, roleId, userId], callback);
-    }
+// models/User.js
+
+static updateUser(userId, userData, callback) {
+    const { username, password, roleId } = userData;
+
+    // เริ่มต้นด้วยการอัปเดตข้อมูลในตาราง user
+    const updateUserQuery = 'UPDATE user SET username = ? WHERE userId = ?';
+    db.query(updateUserQuery, [username, userId], (err, result) => {
+        if (err) {
+            return callback(err);
+        }
+
+        // อัปเดต password ถ้ามีการกรอก
+        if (password) {
+            const updatePasswordQuery = 'UPDATE user SET password = ? WHERE userId = ?';
+            db.query(updatePasswordQuery, [password, userId], (err) => {
+                if (err) {
+                    return callback(err);
+                }
+            });
+        }
+
+        // อัปเดตข้อมูลในตาราง userroles
+        const updateRoleQuery = 'UPDATE userroles SET roleId = ? WHERE userId = ?';
+        db.query(updateRoleQuery, [roleId, userId], (err) => {
+            if (err) {
+                return callback(err);
+            }
+            callback(null, result);
+        });
+    });
+}
+
+
 
     // ลบผู้ใช้
     static deleteUser(userId, callback) {
@@ -82,6 +111,8 @@ class User {
             callback(err, results);
         });
     }
+
+    
     
 
     

@@ -83,9 +83,6 @@ exports.startProblemSolving = (req, res) => {
         if (err) {
             return res.status(500).send('Error marking ticket as in progress');
         }
-
-        // แจ้งผู้ใช้ว่าการแก้ปัญหากำลังดำเนินการ
-        res.send('Ticket is now in progress. You can start solving it.');
     });
 };
 
@@ -99,9 +96,6 @@ exports.resolveTicket = (req, res) => {
         if (err) {
             return res.status(500).send('Error resolving ticket');
         }
-
-        // แจ้งผู้ใช้ว่าตั๋วคำขอได้รับการแก้ไข
-        res.send('Ticket has been resolved successfully. User has been notified.');
     });
 };
 

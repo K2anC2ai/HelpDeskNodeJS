@@ -8,6 +8,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/users">Manage Users</a> <!-- เปลี่ยนจาก Manage Users -->
+        <a href="/generate-report">Reports</a>
+        <a href="/logout">Logout</a>
+      </nav>
    <h1>Add New User</h1>
    <form action="/users/add" method="POST">
        <label>Username: <input type="text" name="username" required></label><br>

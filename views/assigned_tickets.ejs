@@ -6,6 +6,27 @@
     <title>Assigned Tickets</title>
     <link rel="stylesheet" href="/styles.css"> <!-- เชื่อมโยง CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        button:disabled, input:disabled {
+            background-color: #e0e0e0; /* สีพื้นหลังของปุ่มที่ถูกปิด */
+            color: #a0a0a0; /* สีตัวอักษร */
+            cursor: not-allowed; /* เปลี่ยนเคอร์เซอร์เมื่อชี้ไปที่ปุ่ม */
+        }
+
+        button:not(:disabled) {
+            background-color: #007bff; /* สีพื้นหลังของปุ่มที่สามารถกดได้ */
+            color: white; /* สีตัวอักษร */
+            cursor: pointer; /* เปลี่ยนเคอร์เซอร์ให้เป็น pointer */
+        }
+
+        button:hover:not(:disabled) {
+            background-color: #0056b3; /* เปลี่ยนสีเมื่อชี้ไปที่ปุ่มที่สามารถกดได้ */
+        }
+
+        .hidden {
+            display: none; /* ซ่อนแถวที่ไม่ตรงกับฟิลเตอร์ */
+        }
+    </style>
 </head>
 <body>
     <nav>
@@ -46,23 +67,37 @@
                         <td><%= ticket.description %></td>
                         <td><%= ticket.status === 'In Progress' ? 'In Progress' : ticket.status %></td>
                         <td class="actions">
-                            <% if (ticket.status !== 'Resolved') { %>
-                                <form action="/tickets/<%= ticket.ticketId %>/solve" method="POST" class="action-form">
-                                    <button type="submit" <% if (ticket.status === 'In Progress') { %> disabled <% } %>>Start Solving</button>
+                            <% if (ticket.status === 'Assigned') { %>
+                                <form action="/tickets/<%= ticket.ticketId %>/solve" method="POST" class="action-form" onsubmit="setTimeout(() => window.location.reload(), 100);">
+                                    <button type="submit">Start Solving</button>
+                                </form>
+                                <form action="/tickets/<%= ticket.ticketId %>/resolve" method="POST" class="action-form" onsubmit="setTimeout(() => window.location.reload(), 100);">
+                                    <input type="text" name="solution" placeholder="Enter solution" disabled>
+                                    <button type="submit" disabled>Resolve</button>
+                                </form>
+                            <% } else if (ticket.status === 'In Progress') { %>
+                                <form action="/tickets/<%= ticket.ticketId %>/solve" method="POST" class="action-form" onsubmit="setTimeout(() => window.location.reload(), 100);">
+                                    <button type="submit" disabled>Start Solving</button>
+                                </form>
+                                <form action="/tickets/<%= ticket.ticketId %>/resolve" method="POST" class="action-form" onsubmit="setTimeout(() => window.location.reload(), 100);">
+                                    <input type="text" name="solution" placeholder="Enter solution" required>
+                                    <button type="submit">Resolve</button>
+                                </form>
+                            <% } else { %>
+                                <form action="/tickets/<%= ticket.ticketId %>/solve" method="POST" class="action-form" onsubmit="setTimeout(() => window.location.reload(), 100);">
+                                    <button type="submit" disabled>Start Solving</button>
+                                </form>
+                                <form action="/tickets/<%= ticket.ticketId %>/resolve" method="POST" class="action-form" onsubmit="setTimeout(() => window.location.reload(), 100);">
+                                    <input type="text" name="solution" placeholder="Enter solution" disabled>
+                                    <button type="submit" disabled>Resolve</button>
                                 </form>
                             <% } %>
-                            <form action="/tickets/<%= ticket.ticketId %>/resolve" method="POST" class="action-form">
-                                <input type="text" name="solution" placeholder="Enter solution" required>
-                                <button type="submit" <% if (ticket.status !== 'In Progress') { %> disabled <% } %>>Resolve</button>
-                            </form>
                         </td>
                     </tr>
                 <% }); %>
             </tbody>
         </table>
     </div>
-
-
 
     <script>
         // ฟังก์ชันสำหรับกรองตั๋วตามสถานะ
@@ -78,6 +113,28 @@
                     row.classList.add('hidden');
                 }
             });
+        });
+
+        // ฟังก์ชันสำหรับปรับสถานะปุ่มและฟิลด์เมื่อโหลด
+        document.querySelectorAll('.ticket-row').forEach(row => {
+            const status = row.getAttribute('data-status');
+            const startSolvingButton = row.querySelector('form[action*="/solve"] button');
+            const resolveButton = row.querySelector('form[action*="/resolve"] button');
+            const solutionInput = row.querySelector('form[action*="/resolve"] input[name="solution"]');
+
+            if (status === 'In Progress') {
+                startSolvingButton.disabled = true;
+                resolveButton.disabled = false;
+                solutionInput.disabled = false;
+            } else if (status === 'Assigned') {
+                startSolvingButton.disabled = false;
+                resolveButton.disabled = true;
+                solutionInput.disabled = true;
+            } else {
+                startSolvingButton.disabled = true;
+                resolveButton.disabled = true;
+                solutionInput.disabled = true;
+            }
         });
     </script>
 </body>
