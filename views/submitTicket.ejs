@@ -1,23 +1,26 @@
-<!-- views/submitTicket.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Ticket</title>
     <link rel="stylesheet" href="/styles.css"> <!-- เชื่อมโยง CSS -->
 </head>
-<body>
+<body class="submit-ticket-page">
     <nav>
         <a href="/">Home</a>
         <a href="/submit-ticket">Create your new ticket</a>
         <a href="/track-tickets">Ticket Status</a>
-        <a href="/knowledge-base">knowledge-base</a>
+        <a href="/knowledge-base">Knowledge Base</a>
         <a href="/logout">Logout</a>
-      </nav>
-    <h1>Submit Ticket</h1>
-    <form action="/submit-ticket" method="POST">
-        <textarea name="description" placeholder="Describe your issue" required></textarea>
-        <button type="submit">Submit</button>
-    </form>
+    </nav>
+
+    <div class="form-container">
+        <h1>Submit Ticket</h1>
+        <form action="/submit-ticket" method="POST">
+            <textarea name="description" placeholder="Describe your issue in detail..." required></textarea>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
 </body>
 </html>

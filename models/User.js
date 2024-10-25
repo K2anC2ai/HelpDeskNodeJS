@@ -27,6 +27,25 @@ class User {
             callback(err, results);
         });
     }
+    static getAllUsers(callback) {
+        db.query('SELECT * FROM user', (err, results) => {
+            callback(err, results);
+        });
+    }
+
+    static createUser(userData, callback) {
+        const { username, password, role } = userData;
+        db.query('INSERT INTO user (username, password, role) VALUES (?, ?, ?)', [username, password, role], callback);
+    }
+
+    static updateUser(userId, userData, callback) {
+        const { username, role } = userData;
+        db.query('UPDATE user SET username = ?, role = ? WHERE userId = ?', [username, role, userId], callback);
+    }
+
+    static deleteUser(userId, callback) {
+        db.query('DELETE FROM user WHERE userId = ?', [userId], callback);
+    }
 }
 
 module.exports = User;

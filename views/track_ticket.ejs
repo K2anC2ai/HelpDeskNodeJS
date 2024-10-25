@@ -11,18 +11,20 @@
         <a href="/">Home</a>
         <a href="/submit-ticket">Create your new ticket</a>
         <a href="/track-tickets">Ticket Status</a>
-        <a href="/knowledge-base">knowledge-base</a>
+        <a href="/knowledge-base">Knowledge Base</a>
         <a href="/logout">Logout</a>
-      </nav>
-    <h1>Your Tickets</h1>
-    <ul>
-        <% tickets.forEach(ticket => { %>
-            <li>
-                <a href="/ticket/<%= ticket.ticketId %>">Ticket ID: <%= ticket.ticketId %></a>
-                - Status: <%= ticket.status %>
-            </li>
-        <% }); %>
-    </ul>
-    
+    </nav>
+
+    <div class="container">
+        <h1>Your Tickets</h1>
+        <ul class="ticket-list">
+            <% tickets.forEach(ticket => { %>
+                <li class="ticket-item" style="color: black;">
+                    <a href="/ticket/<%= ticket.ticketId %>">Ticket ID: <%= ticket.ticketId %></a>
+                    <span class="ticket-status"> - Status: <%= ticket.status %></span>
+                </li>
+            <% }); %>
+        </ul>
+    </div>
 </body>
 </html>

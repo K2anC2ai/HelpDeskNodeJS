@@ -45,5 +45,9 @@ router.post('/tickets/:ticketId/resolve', TicketController.resolveTicket);
 router.get('/tickets/assigned', TicketController.getAssignedTickets);
 
 
+router.get('/user-management', UserController.getUserList);
+router.post('/user-management/add', UserController.addUser);
+router.post('/user-management/edit/:userId', UserController.editUser);
+router.post('/user-management/delete/:userId', UserController.deleteUser);
 
 module.exports = router;
