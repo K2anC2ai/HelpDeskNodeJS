@@ -75,6 +75,7 @@
                                     <input type="text" name="solution" placeholder="Enter solution" disabled>
                                     <button type="submit" disabled>Resolve</button>
                                 </form>
+                                <a href="/chat/<%= ticket.ticketId %>">Chat</a>
                             <% } else if (ticket.status === 'In Progress') { %>
                                 <form action="/tickets/<%= ticket.ticketId %>/solve" method="POST" class="action-form" onsubmit="setTimeout(() => window.location.reload(), 100);">
                                     <button type="submit" disabled>Start Solving</button>
@@ -83,6 +84,7 @@
                                     <input type="text" name="solution" placeholder="Enter solution" required>
                                     <button type="submit">Resolve</button>
                                 </form>
+                                <a href="/chat/<%= ticket.ticketId %>">Chat</a>
                             <% } else { %>
                                 <form action="/tickets/<%= ticket.ticketId %>/solve" method="POST" class="action-form" onsubmit="setTimeout(() => window.location.reload(), 100);">
                                     <button type="submit" disabled>Start Solving</button>
@@ -91,6 +93,7 @@
                                     <input type="text" name="solution" placeholder="Enter solution" disabled>
                                     <button type="submit" disabled>Resolve</button>
                                 </form>
+                                <a href="/chat/<%= ticket.ticketId %>">Chat</a>
                             <% } %>
                         </td>
                     </tr>

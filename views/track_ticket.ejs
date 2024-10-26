@@ -22,9 +22,11 @@
                 <li class="ticket-item" style="color: black;">
                     <a href="/ticket/<%= ticket.ticketId %>">Ticket ID: <%= ticket.ticketId %></a>
                     <span class="ticket-status"> - Status: <%= ticket.status %></span>
+                    <a href="/chat/<%= ticket.ticketId %>">Chat</a> <!-- Link to chat -->
                 </li>
             <% }); %>
         </ul>
+        
     </div>
 </body>
 </html>

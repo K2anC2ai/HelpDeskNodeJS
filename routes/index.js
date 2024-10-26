@@ -8,6 +8,8 @@ const dashboardController = require('../controllers/DashboardController');
 const KnowledgeBaseController = require('../controllers/KnowledgeBaseController');
 const ReportController = require('../controllers/ReportController');
 const UserController = require('../controllers/UserController');
+const ChatController = require('../controllers/ChatController');
+
 
 
 
@@ -63,5 +65,7 @@ router.post('/users/delete/:userId', authorize('ManageUsers'), UserController.de
 router.get('/edit-queue', TicketController.editQueue);
 router.post('/update-queue', TicketController.updateQueue);
 
+router.get('/chat/:ticketId', ChatController.getChat);
+router.post('/chat/:ticketId', ChatController.postChat);
 
 module.exports = router;
