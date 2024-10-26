@@ -3,7 +3,12 @@ const db = require('../config/db');
 
 class Ticket {
     static getNewTickets(callback) {
-        const query = 'SELECT * FROM ticket WHERE status = "NEW"';
+        const query = `
+            SELECT t.*, q.priorityLevel 
+            FROM ticket t 
+            LEFT JOIN queue q ON t.queueId = q.queueId 
+            WHERE t.status = "NEW"
+        `;
         db.query(query, (err, results) => {
             callback(err, results);
         });
@@ -22,9 +27,35 @@ class Ticket {
 
     static create(ticketData, callback) {
         db.query('INSERT INTO ticket SET ?', ticketData, (err, results) => {
-            callback(err, results);
+            if (err) return callback(err);
+            
+            // คำนวณ priorityLevel โดยการนับจำนวน queue ปัจจุบัน
+            db.query('SELECT COUNT(*) AS count FROM queue', (err, countResult) => {
+                if (err) return callback(err);
+        
+                const newPriorityLevel = countResult[0].count + 1; // เพิ่ม 1 เพื่อเป็นลำดับถัดไป
+                
+                // สร้าง queue entry ใหม่
+                const newQueueEntry = {
+                    ticketId: results.insertId,
+                    priorityLevel: newPriorityLevel // ใช้ค่า count เป็น priorityLevel
+                };
+                
+                // เพิ่ม queue entry ใหม่
+                db.query('INSERT INTO queue SET ?', newQueueEntry, (err, queueResult) => {
+                    if (err) return callback(err);
+    
+                    // อัปเดต queueId ในตาราง ticket
+                    db.query('UPDATE ticket SET queueId = ? WHERE ticketId = ?', [queueResult.insertId, results.insertId], (err) => {
+                        if (err) return callback(err);
+                        callback(null, results); // ส่งผลลัพธ์กลับไป
+                    });
+                });
+            });
         });
     }
+    
+    
     static fetchTicketsForUser(userId, callback) {
         db.query('SELECT * FROM ticket WHERE userId = ?', [userId], (err, results) => {
             callback(err, results);
@@ -51,6 +82,12 @@ class Ticket {
         db.query(sql, [userId], callback);
     }
 
+    static updateQueue(queueId, priorityLevel, callback) {
+        const sql = 'UPDATE queue SET priorityLevel = ? WHERE queueId = ?';
+        db.query(sql, [priorityLevel, queueId], callback);
+    }
 }
+
+
 
 module.exports = Ticket;

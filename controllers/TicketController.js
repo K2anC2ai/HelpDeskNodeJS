@@ -9,14 +9,7 @@ exports.submitTicket = (req, res) => {
 };
 
 exports.createTicket = (req, res) => {
-    if (!req.session.userId) {
-        return res.redirect('/login');
-    }
 
-    // ตรวจสอบว่าผู้ใช้มีสิทธิ์ 'Create Ticket'
-    if (!req.session.permissions.includes('Create Ticket')) {
-        return res.send('Permission denied: You do not have the rights to create a ticket.');
-    }
 
     const ticketData = {
         userId: req.session.userId,
@@ -24,12 +17,16 @@ exports.createTicket = (req, res) => {
         status: 'NEW',
         createdDate: new Date()
     };
-    
+
     Ticket.create(ticketData, (err, result) => {
         if (err) return res.send('Error saving ticket');
         res.render('confirmation', { ticketId: result.insertId });
     });
 };
+
+
+
+
 
 exports.viewNewTickets = (req, res) => {
     if (!req.session.userId) return res.redirect('/login');
@@ -110,4 +107,31 @@ exports.getAssignedTickets = (req, res) => {
 
         res.render('assigned_tickets', { tickets });
     });
+};
+exports.editQueue = (req, res) => {
+    Ticket.getNewTickets((err, tickets) => {
+        if (err) return res.send('Error fetching tickets');
+        res.render('edit_queue', { tickets });
+    });
+};
+
+// ฟังก์ชันสำหรับอัปเดตลำดับ queue
+exports.updateQueue = (req, res) => {
+    const updatedQueue = req.body.queue; // สมมุติว่าเป็นอาเรย์ของ queueId และ priorityLevel ที่ส่งจากฟอร์ม
+
+    // Loop ผ่านแต่ละ item ใน updatedQueue เพื่ออัปเดตในฐานข้อมูล
+    const updates = updatedQueue.map((item) => {
+        return new Promise((resolve, reject) => {
+            const { queueId, priorityLevel } = item;
+            Ticket.updateQueue(queueId, priorityLevel, (err) => {
+                if (err) return reject(err);
+                resolve();
+            });
+        });
+    });
+
+    // รอให้ Promise ทั้งหมดเสร็จสิ้น
+    Promise.all(updates)
+        .then(() => res.send('Queue updated successfully!'))
+        .catch((err) => res.status(500).send('Error updating queue'));
 };

@@ -60,4 +60,8 @@ router.post('/users/edit/:userId', authorize('ManageUsers'), UserController.upda
 // ลบผู้ใช้
 router.post('/users/delete/:userId', authorize('ManageUsers'), UserController.deleteUser);
 
+router.get('/edit-queue', TicketController.editQueue);
+router.post('/update-queue', TicketController.updateQueue);
+
+
 module.exports = router;
