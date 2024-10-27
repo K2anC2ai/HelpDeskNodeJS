@@ -35,14 +35,19 @@ router.get('/knowledge-base', (req, res) => {
 
 router.get('/search-articles', KnowledgeBaseController.searchArticles);
 
-router.get('/generate-report',authorize('GenReport'), ReportController.generateReport);
 
+
+router.post('/generate-report', ReportController.generateReport);
+router.get('/reports', ReportController.viewReports);
+router.get('/user-reports', ReportController.viewUserReports);
 
 
 router.post('/tickets/:ticketId/solve', TicketController.startProblemSolving);
 
 // Route สำหรับบันทึกการแก้ไขปัญหาเสร็จ
 router.post('/tickets/:ticketId/resolve', TicketController.resolveTicket);
+router.post('/tickets/:ticketId/escalate', TicketController.escalateTicket);
+
 
 
 router.get('/tickets/assigned', TicketController.getAssignedTickets);
@@ -67,5 +72,11 @@ router.post('/update-queue', TicketController.updateQueue);
 
 router.get('/chat/:ticketId', ChatController.getChat);
 router.post('/chat/:ticketId', ChatController.postChat);
+
+
+router.post('/tickets/:ticketId/verify', TicketController.verifyTicket);
+router.post('/tickets/:ticketId/not-verify', TicketController.notVerifyTicket);
+
+
 
 module.exports = router;

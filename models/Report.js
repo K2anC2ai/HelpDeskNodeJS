@@ -1,16 +1,32 @@
 const db = require('../config/db');
 
 class Report {
-    static fetchStatistics(callback) {
-        const sql = `SELECT 
-                        COUNT(*) AS totalTickets, 
-                        SUM(CASE WHEN status = 'Assigned' THEN 1 ELSE 0 END) AS assignedTickets,
-                        SUM(CASE WHEN status = 'Resolved' THEN 1 ELSE 0 END) AS resolvedTickets,
-                        SUM(CASE WHEN status = 'Closed' THEN 1 ELSE 0 END) AS closedTickets
-                     FROM ticket`;
-        
+    static generateReport(reportType, reportData, generatedBy, callback) {
+        const sql = 'INSERT INTO report (reportType, reportData, generatedBy) VALUES (?, ?, ?)';
+        db.query(sql, [reportType, reportData, generatedBy], (err, results) => {
+            callback(err, results);
+        });
+    }
+
+    static fetchReports(callback) {
+        const sql = 'SELECT * FROM report';
         db.query(sql, (err, results) => {
-            callback(err, results[0]);
+            callback(err, results);
+        });
+    }
+
+    static fetchReportsByUser(userId, callback) {
+        const sql = 'SELECT * FROM report WHERE generatedBy = ?';
+        db.query(sql, [userId], (err, results) => {
+            callback(err, results);
+        });
+    }
+
+    // ฟังก์ชันเพิ่มเติมสำหรับรายงานตามประเภท
+    static fetchReportsByType(reportType, callback) {
+        const sql = 'SELECT * FROM report WHERE reportType = ?';
+        db.query(sql, [reportType], (err, results) => {
+            callback(err, results);
         });
     }
 }

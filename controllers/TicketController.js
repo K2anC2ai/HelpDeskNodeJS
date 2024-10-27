@@ -82,6 +82,16 @@ exports.startProblemSolving = (req, res) => {
         }
     });
 };
+exports.escalateTicket = (req, res) => {
+    const ticketId = req.params.ticketId;
+
+    Ticket.markTicketEscalated(ticketId, (err) => {
+        if (err) {
+            return res.status(500).send('Error escalating ticket');
+        }
+        res.redirect('/tickets/assigned');
+    });
+};
 
 // ฟังก์ชันสำหรับบันทึกการแก้ไขปัญหาเสร็จ
 exports.resolveTicket = (req, res) => {
@@ -95,6 +105,8 @@ exports.resolveTicket = (req, res) => {
         }
     });
 };
+
+
 
 
 exports.getAssignedTickets = (req, res) => {
@@ -135,3 +147,28 @@ exports.updateQueue = (req, res) => {
         .then(() => res.send('Queue updated successfully!'))
         .catch((err) => res.status(500).send('Error updating queue'));
 };
+
+
+exports.verifyTicket = (req, res) => {
+    const ticketId = req.params.ticketId;
+
+    // อัปเดตสถานะเป็น "Verified"
+    Ticket.updateTicketStatus(ticketId, 'Closed', (err, result) => {
+        if (err) {
+            return res.status(500).send('Error verifying ticket');
+        }
+        res.redirect('/track-tickets'); // เปลี่ยนเส้นทางหลังจากตรวจสอบเสร็จ
+    });
+};
+
+exports.notVerifyTicket = (req, res) => {
+    const ticketId = req.params.ticketId;
+
+    Ticket.updateTicketStatus(ticketId, 'Reopened', (err, result) => {
+        if (err) {
+            return res.status(500).send('Error not verifying ticket');
+        }
+        res.redirect('/track-tickets'); // เปลี่ยนเส้นทางหลังจากไม่ตรวจสอบเสร็จ
+    });
+};
+

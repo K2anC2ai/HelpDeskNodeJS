@@ -47,6 +47,8 @@
                 <option value="In Progress">In Progress</option>
                 <option value="Resolved">Resolved</option>
                 <option value="Closed">Closed</option>
+                <option value="Reopened">Reopened</option>
+                <option value="Escalated">Escalated</option>
             </select>
         </div>
 
@@ -68,6 +70,9 @@
                         <td><%= ticket.status === 'In Progress' ? 'In Progress' : ticket.status %></td>
                         <td class="actions">
                             <% if (ticket.status === 'Assigned') { %>
+                                <form action="/tickets/<%= ticket.ticketId %>/escalate" method="POST" class="action-form" onsubmit="setTimeout(() => window.location.reload(), 100);">
+                                    <button type="submit">Escalate</button>
+                                </form>
                                 <form action="/tickets/<%= ticket.ticketId %>/solve" method="POST" class="action-form" onsubmit="setTimeout(() => window.location.reload(), 100);">
                                     <button type="submit">Start Solving</button>
                                 </form>
@@ -77,6 +82,9 @@
                                 </form>
                                 <a href="/chat/<%= ticket.ticketId %>">Chat</a>
                             <% } else if (ticket.status === 'In Progress') { %>
+                                <form action="/tickets/<%= ticket.ticketId %>/escalate" method="POST" class="action-form" onsubmit="setTimeout(() => window.location.reload(), 100);">
+                                    <button type="submit">Escalate</button>
+                                </form>
                                 <form action="/tickets/<%= ticket.ticketId %>/solve" method="POST" class="action-form" onsubmit="setTimeout(() => window.location.reload(), 100);">
                                     <button type="submit" disabled>Start Solving</button>
                                 </form>
@@ -130,6 +138,14 @@
                 resolveButton.disabled = false;
                 solutionInput.disabled = false;
             } else if (status === 'Assigned') {
+                startSolvingButton.disabled = false;
+                resolveButton.disabled = true;
+                solutionInput.disabled = true;
+            }else if (status === 'Reopened') {
+                startSolvingButton.disabled = false;
+                resolveButton.disabled = true;
+                solutionInput.disabled = true;
+            }else if (status === 'Escalated') {
                 startSolvingButton.disabled = false;
                 resolveButton.disabled = true;
                 solutionInput.disabled = true;

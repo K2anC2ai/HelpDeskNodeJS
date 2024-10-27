@@ -131,10 +131,19 @@ class Ticket {
         });
     }
 
+    static updateTicketStatus(ticketId, status, callback) {
+        const sql = 'UPDATE ticket SET status = ? WHERE ticketId = ?';
+        db.query(sql, [status, ticketId], callback);
+    }
+    static markTicketEscalated(ticketId, callback) {
+        const sql = 'UPDATE ticket SET status = ? WHERE ticketId = ?';
+        db.query(sql, ['Escalated', ticketId], callback);
+    }
+    
     
 }
 
-
+    
 
 
 

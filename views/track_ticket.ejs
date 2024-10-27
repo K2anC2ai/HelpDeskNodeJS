@@ -17,16 +17,55 @@
 
     <div class="container">
         <h1>Your Tickets</h1>
-        <ul class="ticket-list">
+        
+        <!-- Dropdown for filtering tickets by status -->
+        <label for="status-filter">Filter by Status:</label>
+        <select id="status-filter" onchange="filterTickets()">
+            <option value="all">All</option>
+            <option value="NEW">NEW</option>
+            <option value="Assigned">Assigned</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Resolved">Resolved</option>
+            <option value="Closed">Closed</option>
+            <option value="Reopened">Reopened</option>
+        </select>
+
+        <ul class="ticket-list" id="ticket-list">
             <% tickets.forEach(ticket => { %>
-                <li class="ticket-item" style="color: black;">
+                <li class="ticket-item" style="color: black;" data-status="<%= ticket.status %>">
                     <a href="/ticket/<%= ticket.ticketId %>">Ticket ID: <%= ticket.ticketId %></a>
                     <span class="ticket-status"> - Status: <%= ticket.status %></span>
                     <a href="/chat/<%= ticket.ticketId %>">Chat</a> <!-- Link to chat -->
+                    
+                    <!-- Verify button for tickets with status Resolved -->
+                    <% if (ticket.status === 'Resolved') { %>
+                        <form action="/tickets/<%= ticket.ticketId %>/verify" method="POST">
+                            <button type="submit">Verify</button>
+                        </form>
+                        <form action="/tickets/<%= ticket.ticketId %>/not-verify" method="POST">
+                            <button type="submit">Reopened</button>
+                        </form>
+                    <% } %>
                 </li>
             <% }); %>
         </ul>
         
     </div>
+
+    <script>
+        function filterTickets() {
+            const filter = document.getElementById('status-filter').value;
+            const tickets = document.querySelectorAll('.ticket-item');
+
+            tickets.forEach(ticket => {
+                const status = ticket.getAttribute('data-status');
+                if (filter === 'all' || status === filter) {
+                    ticket.style.display = 'list-item'; // Show the ticket
+                } else {
+                    ticket.style.display = 'none'; // Hide the ticket
+                }
+            });
+        }
+    </script>
 </body>
 </html>
