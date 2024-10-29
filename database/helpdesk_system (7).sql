@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 27, 2024 at 01:05 PM
+-- Generation Time: Oct 29, 2024 at 10:47 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -40,7 +40,8 @@ CREATE TABLE `chat` (
 
 INSERT INTO `chat` (`chatId`, `ticketId`, `chatLog`, `createdAt`) VALUES
 (8, 55, 'หมวย: ช่วยหน่อยนะคะ', '2024-10-26 10:35:57'),
-(9, 55, 'staff: กำลังแก้ให้ครับ', '2024-10-26 10:42:50');
+(9, 55, 'staff: กำลังแก้ให้ครับ', '2024-10-26 10:42:50'),
+(10, 60, 'asd: asd', '2024-10-29 09:29:46');
 
 -- --------------------------------------------------------
 
@@ -80,10 +81,16 @@ CREATE TABLE `permission` (
 
 INSERT INTO `permission` (`permissionId`, `permissionName`) VALUES
 (4, 'Assign Ticket'),
+(11, 'Chat'),
 (1, 'Create Ticket'),
 (3, 'Delete Ticket'),
+(10, 'editQueue'),
 (5, 'GenReport'),
+(8, 'knowledgeBase'),
 (6, 'ManageUsers'),
+(9, 'SolveProblem'),
+(7, 'TrackTicket'),
+(12, 'Verify'),
 (2, 'View Ticket');
 
 -- --------------------------------------------------------
@@ -103,7 +110,10 @@ CREATE TABLE `queue` (
 --
 
 INSERT INTO `queue` (`queueId`, `priorityLevel`, `ticketId`) VALUES
-(17, '1', 59);
+(18, '2', 60),
+(19, '1', 61),
+(20, '3', 62),
+(21, '4', 63);
 
 -- --------------------------------------------------------
 
@@ -172,7 +182,15 @@ INSERT INTO `rolepermissions` (`roleId`, `permissionId`) VALUES
 (1, 5),
 (1, 6),
 (2, 1),
-(3, 4);
+(2, 7),
+(2, 8),
+(2, 11),
+(2, 12),
+(3, 4),
+(3, 8),
+(3, 9),
+(3, 10),
+(3, 11);
 
 -- --------------------------------------------------------
 
@@ -199,8 +217,12 @@ INSERT INTO `ticket` (`ticketId`, `userId`, `description`, `status`, `createdDat
 (55, 12, 'สวัสดีค่ะ/ครับ ทีมสนับสนุน ฉันไม่สามารถเข้าสู่ระบบบัญชีของฉันได้ เมื่อฉันพยายามล็อกอิน ฉันได้รับข้อความว่า \"ข้อมูลประจำตัวไม่ถูกต้อง\" ฉันได้รีเซ็ตรหัสผ่านหลายครั้งแล้ว แต่ยังคงประสบปัญหาอยู่ กรุณาช่วยตรวจสอบปัญหานี้ให้ฉันด้วยค่ะ/ครับ ขอบคุณมากค่ะ/ครับ!\r\n\r', 'Closed', '2024-10-26 17:34:49', NULL, 11, 'ผมรีเซ็ทให้แล้ว'),
 (56, 12, 'สวัสดีค่ะ/ครับ ฉันต้องการสอบถามสถานะของตั๋วที่ฉันได้ส่งเมื่อสัปดาห์ที่แล้ว รบกวนช่วยอัปเดตให้หน่อยค่ะ/ครับ ขอบคุณค่ะ/ครับ!\r\n\r\n', 'Closed', '2024-10-26 17:34:55', NULL, 11, 'asdasdasd'),
 (57, 12, 'สวัสดีค่ะ/ครับ ฉันไม่แน่ใจว่าต้องตั้งค่าการแจ้งเตือนอย่างไรในระบบ ช่วยแนะนำขั้นตอนให้ฉันได้ไหมค่ะ/ครับ ขอบคุณค่ะ/ครับ!\r\n\r\n', 'Closed', '2024-10-26 17:35:01', NULL, 11, 'asdasd'),
-(58, 12, 'สวัสดีค่ะ/ครับ ขณะนี้ฉันประสบปัญหากับระบบที่ไม่สามารถอัปโหลดเอกสารได้ รบกวนช่วยตรวจสอบให้ด้วยค่ะ/ครับ ขอบคุณค่ะ/ครับ!', 'Escalated', '2024-10-26 17:35:10', NULL, 11, NULL),
-(59, 12, 'sadasd', 'NEW', '2024-10-27 19:01:09', 17, NULL, NULL);
+(58, 12, 'สวัสดีค่ะ/ครับ ขณะนี้ฉันประสบปัญหากับระบบที่ไม่สามารถอัปโหลดเอกสารได้ รบกวนช่วยตรวจสอบให้ด้วยค่ะ/ครับ ขอบคุณค่ะ/ครับ!', 'Reopened', '2024-10-26 17:35:10', NULL, 11, 'asdasda'),
+(59, 12, 'sadasd', 'In Progress', '2024-10-27 19:01:09', NULL, 11, NULL),
+(60, 12, 'a', 'NEW', '2024-10-29 13:54:38', 18, NULL, NULL),
+(61, 12, 'asdasd', 'NEW', '2024-10-29 14:02:07', 19, NULL, NULL),
+(62, 12, 'asdasdasdasd', 'NEW', '2024-10-29 14:02:09', 20, NULL, NULL),
+(63, 12, 'a', 'NEW', '2024-10-29 16:29:41', 21, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -328,7 +350,7 @@ ALTER TABLE `userroles`
 -- AUTO_INCREMENT for table `chat`
 --
 ALTER TABLE `chat`
-  MODIFY `chatId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `chatId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `knowledgebase`
@@ -340,13 +362,13 @@ ALTER TABLE `knowledgebase`
 -- AUTO_INCREMENT for table `permission`
 --
 ALTER TABLE `permission`
-  MODIFY `permissionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `permissionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `queue`
 --
 ALTER TABLE `queue`
-  MODIFY `queueId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `queueId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `report`
@@ -358,13 +380,13 @@ ALTER TABLE `report`
 -- AUTO_INCREMENT for table `role`
 --
 ALTER TABLE `role`
-  MODIFY `roleId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `roleId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `ticket`
 --
 ALTER TABLE `ticket`
-  MODIFY `ticketId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `ticketId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `user`
