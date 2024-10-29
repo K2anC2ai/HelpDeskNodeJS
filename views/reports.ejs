@@ -3,8 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Reports</title>
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/users">Manage Users</a> <!-- เปลี่ยนจาก Manage Users -->
+        <a href="/reports">Reports</a>
+        <a href="/logout">Logout</a>
+      </nav>
     <h1>Generated Reports</h1>
     <form action="/generate-report" method="POST">
         <label for="reportType">Select Report Type:</label>
@@ -14,7 +21,7 @@
         </select>
         <button type="submit">Generate Report</button>
     </form>
-    <table border="1">
+    <table border="1" style="color: black;">
         <thead>
             <tr>
                 <th>Report ID</th>

@@ -35,6 +35,9 @@
                 <li class="ticket-item" style="color: black;" data-status="<%= ticket.status %>">
                     <a href="/ticket/<%= ticket.ticketId %>">Ticket ID: <%= ticket.ticketId %></a>
                     <span class="ticket-status"> - Status: <%= ticket.status %></span>
+                    <% if (ticket.priorityLevel != null) { %>
+                        <span class="ticket-status"> - Queue: <%= ticket.priorityLevel %></span>
+                    <% } %>
                     <a href="/chat/<%= ticket.ticketId %>">Chat</a> <!-- Link to chat -->
                     
                     <!-- Verify button for tickets with status Resolved -->

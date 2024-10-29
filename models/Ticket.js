@@ -71,11 +71,17 @@ class Ticket {
     
     
     static fetchTicketsForUser(userId, callback) {
-        db.query('SELECT * FROM ticket WHERE userId = ?', [userId], (err, results) => {
+        const query = `
+            SELECT ticket.*, queue.priorityLevel 
+            FROM ticket 
+            LEFT JOIN queue ON ticket.ticketId = queue.ticketId 
+            WHERE ticket.userId = ?;
+        `;
+        db.query(query, [userId], (err, results) => {
             callback(err, results);
         });
     }
-
+    
     static fetchTicketStatus(ticketId, callback) {
         db.query('SELECT * FROM ticket WHERE ticketId = ?', [ticketId], (err, results) => {
             callback(err, results[0]);
