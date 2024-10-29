@@ -25,11 +25,11 @@ router.get('/tickets/new', authorize('Assign Ticket'), TicketController.viewNewT
 router.post('/tickets/assign', authorize('Assign Ticket'), TicketController.assignTicket);
 router.get('/', dashboardController.getDashboard);
 
-router.get('/track-tickets', TicketController.getTicketList);
-router.get('/ticket/:ticketId', TicketController.getTicketDetails);
+router.get('/track-tickets', authorize('TrackTicket'),TicketController.getTicketList);
+router.get('/ticket/:ticketId', authorize('TrackTicket'),TicketController.getTicketDetails);
 
 
-router.get('/knowledge-base', (req, res) => {
+router.get('/knowledge-base', authorize('knowledgeBase'),(req, res) => {
     res.render('knowledge_base', { articles: [] }); // แสดงหน้าพร้อมกับบทความว่างเปล่า
 });
 
@@ -37,20 +37,20 @@ router.get('/search-articles', KnowledgeBaseController.searchArticles);
 
 
 
-router.post('/generate-report', ReportController.generateReport);
-router.get('/reports', ReportController.viewReports);
-router.get('/user-reports', ReportController.viewUserReports);
+router.post('/generate-report', authorize('GenReport'),ReportController.generateReport);
+router.get('/reports', authorize('GenReport'),ReportController.viewReports);
+router.get('/user-reports', authorize('GenReport'),ReportController.viewUserReports);
 
 
-router.post('/tickets/:ticketId/solve', TicketController.startProblemSolving);
+router.post('/tickets/:ticketId/solve', authorize('SolveProblem'),TicketController.startProblemSolving);
 
 // Route สำหรับบันทึกการแก้ไขปัญหาเสร็จ
-router.post('/tickets/:ticketId/resolve', TicketController.resolveTicket);
-router.post('/tickets/:ticketId/escalate', TicketController.escalateTicket);
+router.post('/tickets/:ticketId/resolve', authorize('SolveProblem'),TicketController.resolveTicket);
+router.post('/tickets/:ticketId/escalate', authorize('SolveProblem'),TicketController.escalateTicket);
 
 
 
-router.get('/tickets/assigned', TicketController.getAssignedTickets);
+router.get('/tickets/assigned', authorize('SolveProblem'),TicketController.getAssignedTickets);
 
 
 
@@ -67,15 +67,15 @@ router.post('/users/edit/:userId', authorize('ManageUsers'), UserController.upda
 // ลบผู้ใช้
 router.post('/users/delete/:userId', authorize('ManageUsers'), UserController.deleteUser);
 
-router.get('/edit-queue', TicketController.editQueue);
-router.post('/update-queue', TicketController.updateQueue);
+router.get('/edit-queue', authorize('editQueue'),TicketController.editQueue);
+router.post('/update-queue', authorize('editQueue'),TicketController.updateQueue);
 
-router.get('/chat/:ticketId', ChatController.getChat);
-router.post('/chat/:ticketId', ChatController.postChat);
+router.get('/chat/:ticketId', authorize('Chat'),ChatController.getChat);
+router.post('/chat/:ticketId', authorize('Chat'),ChatController.postChat);
 
 
-router.post('/tickets/:ticketId/verify', TicketController.verifyTicket);
-router.post('/tickets/:ticketId/not-verify', TicketController.notVerifyTicket);
+router.post('/tickets/:ticketId/verify',authorize('Verify'), TicketController.verifyTicket);
+router.post('/tickets/:ticketId/not-verify',authorize('Verify'), TicketController.notVerifyTicket);
 
 
 
