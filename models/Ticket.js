@@ -1,6 +1,6 @@
 // models/Ticket.js
 const db = require('../config/db');
-
+//ดึงข้อมูล Ticket ที่มีสถานะเป็น NEW พร้อมระดับความสำคัญ (priorityLevel) โดยใช้การเชื่อมกับตาราง queue เพื่อนำไปแสดงในหน้า Ticket ใหม่
 class Ticket {
     static getNewTickets(callback) {
         const query = `
@@ -13,6 +13,12 @@ class Ticket {
             callback(err, results);
         });
     }
+
+
+//เปลี่ยนสถานะ Ticket เป็น Assigned โดยบันทึก userId ของผู้ทำการ Assign 
+//และลบ Ticket ออกจากตาราง queue (เฉพาะกรณีที่สถานะไม่ใช่ NEW) 
+//พร้อมทั้งเรียงลำดับ priorityLevel ใหม่เพื่อจัดการลำดับในคิว
+
 
     static assign(ticketId, assignedBy, callback) {
         const query = `
@@ -39,6 +45,9 @@ class Ticket {
 
         });
     }
+
+
+    //สร้าง Ticket ใหม่ และกำหนด priorityLevel โดยนับจำนวน queue ปัจจุบัน และบันทึกข้อมูลลำดับลงในตาราง queue รวมถึงอัปเดต queueId ในตาราง Ticket
     static create(ticketData, callback) {
         db.query('INSERT INTO ticket SET ?', ticketData, (err, results) => {
             if (err) return callback(err);
@@ -69,7 +78,7 @@ class Ticket {
         });
     }
     
-    
+//ดึงข้อมูล Ticket ทั้งหมดที่ผู้ใช้คนปัจจุบันเป็นผู้สร้าง พร้อมระดับความสำคัญในคิวเพื่อแสดงให้ผู้ใช้ติดตาม
     static fetchTicketsForUser(userId, callback) {
         const query = `
             SELECT ticket.*, queue.priorityLevel 
@@ -81,32 +90,37 @@ class Ticket {
             callback(err, results);
         });
     }
-    
+
+    //ดึงสถานะของ Ticket ตาม ticketId ที่ได้รับมา
     static fetchTicketStatus(ticketId, callback) {
         db.query('SELECT * FROM ticket WHERE ticketId = ?', [ticketId], (err, results) => {
             callback(err, results[0]);
         });
     }
+
+    //เปลี่ยนสถานะ Ticket เป็น In Progress ตาม ticketId ที่ระบุ
     static markTicketInProgress(ticketId, callback) {
         const sql = 'UPDATE ticket SET status = ? WHERE ticketId = ?';
         db.query(sql, ['In Progress', ticketId], callback);
     }
 
-    // ฟังก์ชันสำหรับบันทึกการแก้ไขปัญหาเสร็จ
+    //บันทึกการแก้ไขปัญหาใน Ticket โดยเปลี่ยนสถานะเป็น Resolved และบันทึกคำตอบหรือแนวทางแก้ไขที่ได้รับจากผู้ใช้
     static resolveTicket(ticketId, solution, callback) {
         const sql = 'UPDATE ticket SET status = ?, solution = ? WHERE ticketId = ?';
         db.query(sql, ['Resolved', solution, ticketId], callback);
     }
+    //ดึง Ticket ทั้งหมดที่ถูกมอบหมายให้เจ้าหน้าที่ตาม userId ของผู้ที่ทำการ Assign
     static getAssignedTickets(userId, callback) {
         const sql = 'SELECT * FROM ticket WHERE assignedBy  = ?'; // สมมุติว่าใช้ `assignedTo` เพื่อเก็บ userId ของเจ้าหน้าที่
         db.query(sql, [userId], callback);
     }
-
+    //อัปเดตระดับความสำคัญ (priorityLevel) ของคิวในตาราง queue โดยใช้ queueId ที่ระบุ
     static updateQueue(queueId, priorityLevel, callback) {
         const sql = 'UPDATE queue SET priorityLevel = ? WHERE queueId = ?';
         db.query(sql, [priorityLevel, queueId], callback);
 
     }
+    //เรียงลำดับความสำคัญ (priorityLevel) ของทุกคิวใหม่ตามลำดับ โดยจะเริ่มจาก 1 ตามลำดับที่ต้องการเพื่อให้ระดับความสำคัญในคิวเป็นไปตามลำดับ
     static reorderPriorityLevels(callback) {
         const query = `
             SELECT queueId FROM queue 
@@ -136,17 +150,16 @@ class Ticket {
                 .catch(callback);
         });
     }
-
+    //อัปเดตสถานะของ Ticket ตาม ticketId ที่ระบุ
     static updateTicketStatus(ticketId, status, callback) {
         const sql = 'UPDATE ticket SET status = ? WHERE ticketId = ?';
         db.query(sql, [status, ticketId], callback);
     }
+    //เปลี่ยนสถานะ Ticket เป็น Escalated ตาม ticketId ที่ระบุเพื่อแสดงว่าปัญหาถูกส่งต่อไปขั้นสูงกว่า
     static markTicketEscalated(ticketId, callback) {
         const sql = 'UPDATE ticket SET status = ? WHERE ticketId = ?';
         db.query(sql, ['Escalated', ticketId], callback);
     }
-    
-    
 }
 
     

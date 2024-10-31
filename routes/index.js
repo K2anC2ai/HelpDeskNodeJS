@@ -11,7 +11,7 @@ const UserController = require('../controllers/UserController');
 const ChatController = require('../controllers/ChatController');
 
 
-
+router.get('/', AuthController.index);
 
 router.get('/login', (req, res) => res.render('login'));
 router.post('/login', AuthController.login);

@@ -33,3 +33,8 @@ exports.logout = (req, res) => {
     req.session.destroy();
     res.redirect('/login');
 };
+
+
+exports.index = (req, res) => {
+    res.redirect('/login');
+};

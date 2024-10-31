@@ -2,12 +2,13 @@
 const Ticket = require('../models/Ticket');
 
 exports.submitTicket = (req, res) => {
-    if (!req.session.userId) {
-        return res.redirect('/login');
-    }
-    res.render('submitTicket');
-};
 
+    res.render('submitTicket');//แสดงหน้าสำหรับส่ง Ticket
+
+
+};
+//สร้าง Ticket ใหม่จากข้อมูลที่ได้รับจากแบบฟอร์มและ session ของผู้ใช้ โดยกำหนด status เป็น NEW 
+//แล้วบันทึกข้อมูลลงฐานข้อมูล ถ้าสำเร็จจะแสดงหน้าการยืนยันที่มีหมายเลข Ticket
 exports.createTicket = (req, res) => {
 
 
@@ -27,7 +28,7 @@ exports.createTicket = (req, res) => {
 
 
 
-
+//ดึงรายการ Ticket ทั้งหมดที่มี status เป็น NEW เพื่อแสดงในหน้า newTickets สำหรับการจัดการ Ticket ใหม่
 exports.viewNewTickets = (req, res) => {
     if (!req.session.userId) return res.redirect('/login');
 
@@ -37,7 +38,7 @@ exports.viewNewTickets = (req, res) => {
         res.render('newTickets', { tickets });
     });
 };
-
+//บันทึกว่าผู้ใช้ได้ Assign ticket ใด โดยเก็บ userId ของผู้ทำการ Assign ลงฐานข้อมูล
 exports.assignTicket = (req, res) => {
     if (!req.session.userId) return res.redirect('/login');  // ตรวจสอบว่ามีการล็อกอินแล้ว
 
@@ -51,6 +52,9 @@ exports.assignTicket = (req, res) => {
 };
 
 
+//ดึงรายการ Ticket ทั้งหมดที่ผู้ใช้ล็อกอินเข้ามาสร้างขึ้นมาแสดงในหน้า track_ticket
+
+
 exports.getTicketList = (req, res) => {
     const userId = req.session.userId; // ดึง userId จาก session
     Ticket.fetchTicketsForUser(userId, (err, tickets) => {
@@ -61,6 +65,8 @@ exports.getTicketList = (req, res) => {
     });
 };
 
+
+//ดึงรายละเอียดของ Ticket ตาม ticketId ที่ได้รับจาก URL แล้วแสดงในหน้า ticket_details
 exports.getTicketDetails = (req, res) => {
     const ticketId = req.params.ticketId;
     Ticket.fetchTicketStatus(ticketId, (err, ticket) => {
@@ -71,7 +77,7 @@ exports.getTicketDetails = (req, res) => {
     });
 };
 
-
+//เปลี่ยนสถานะของ Ticket เป็น In Progress โดยใช้ ticketId ที่รับจาก URL
 exports.startProblemSolving = (req, res) => {
     const ticketId = req.params.ticketId; // รับ ticketId จากพารามิเตอร์ URL
 
@@ -82,6 +88,9 @@ exports.startProblemSolving = (req, res) => {
         }
     });
 };
+
+
+//เปลี่ยนสถานะ Ticket เป็น Escalated โดยใช้ ticketId จาก URL และเปลี่ยนเส้นทางไปยังหน้า /tickets/assigned
 exports.escalateTicket = (req, res) => {
     const ticketId = req.params.ticketId;
 
@@ -108,7 +117,7 @@ exports.resolveTicket = (req, res) => {
 
 
 
-
+//ดึงรายการ Ticket ที่ถูกมอบหมายให้ผู้ใช้คนปัจจุบันเพื่อแสดงในหน้า assigned_tickets
 exports.getAssignedTickets = (req, res) => {
     const userId = req.session.userId; // ดึง userId จาก session
 
@@ -120,6 +129,7 @@ exports.getAssignedTickets = (req, res) => {
         res.render('assigned_tickets', { tickets });
     });
 };
+//ดึง Ticket ที่มีสถานะ NEW มาแสดงในหน้า edit_queue เพื่อปรับเปลี่ยนลำดับการจัดการ (queue)
 exports.editQueue = (req, res) => {
     Ticket.getNewTickets((err, tickets) => {
         if (err) return res.send('Error fetching tickets');
@@ -148,7 +158,7 @@ exports.updateQueue = (req, res) => {
         .catch((err) => res.status(500).send('Error updating queue'));
 };
 
-
+//อัปเดตสถานะ Ticket เป็น Closed เมื่อผู้ใช้ทำการตรวจสอบและยืนยันการแก้ไขแล้ว จากนั้นเปลี่ยนเส้นทางไปยัง /track-tickets
 exports.verifyTicket = (req, res) => {
     const ticketId = req.params.ticketId;
 
@@ -160,6 +170,11 @@ exports.verifyTicket = (req, res) => {
         res.redirect('/track-tickets'); // เปลี่ยนเส้นทางหลังจากตรวจสอบเสร็จ
     });
 };
+
+
+
+//อัปเดตสถานะ Ticket เป็น Reopened ถ้าผู้ใช้ไม่ยืนยันการแก้ไข จากนั้นเปลี่ยนเส้นทางไปยัง /track-tickets
+
 
 exports.notVerifyTicket = (req, res) => {
     const ticketId = req.params.ticketId;
