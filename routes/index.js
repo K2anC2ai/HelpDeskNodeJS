@@ -11,9 +11,7 @@ const UserController = require('../controllers/UserController');
 const ChatController = require('../controllers/ChatController');
 
 
-router.get('/', AuthController.index);
-
-router.get('/login', (req, res) => res.render('login'));
+router.get('/', (req, res) => res.render('login'));
 router.post('/login', AuthController.login);
 router.get('/logout', AuthController.logout);
 router.get('/submit-ticket', authorize('Create Ticket'),TicketController.submitTicket);
@@ -23,7 +21,7 @@ router.get('/tickets/new', authorize('Assign Ticket'), TicketController.viewNewT
 
 // Assign Ticket (ต้องมีสิทธิ์ 'Assign Ticket')
 router.post('/tickets/assign', authorize('Assign Ticket'), TicketController.assignTicket);
-router.get('/', dashboardController.getDashboard);
+router.get('/dashboard', dashboardController.getDashboard);
 
 router.get('/track-tickets', authorize('TrackTicket'),TicketController.getTicketList);
 router.get('/ticket/:ticketId', authorize('TrackTicket'),TicketController.getTicketDetails);

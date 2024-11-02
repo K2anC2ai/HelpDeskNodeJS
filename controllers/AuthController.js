@@ -22,7 +22,7 @@ exports.login = (req, res) => {
                     return res.send('Error fetching permissions');
                 }
                 req.session.permissions = permissions.map(p => p.permissionName);
-                res.redirect('/');
+                res.redirect('/dashboard');
             });
         });
     });
@@ -31,10 +31,5 @@ exports.login = (req, res) => {
 
 exports.logout = (req, res) => {
     req.session.destroy();
-    res.redirect('/login');
-};
-
-
-exports.index = (req, res) => {
     res.redirect('/login');
 };
