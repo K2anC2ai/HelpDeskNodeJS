@@ -26,13 +26,8 @@ router.get('/dashboard', dashboardController.getDashboard);
 router.get('/track-tickets', authorize('TrackTicket'),TicketController.getTicketList);
 router.get('/ticket/:ticketId', authorize('TrackTicket'),TicketController.getTicketDetails);
 
-
-router.get('/knowledge-base', authorize('knowledgeBase'),(req, res) => {
-    res.render('knowledge_base', { articles: [] }); // แสดงหน้าพร้อมกับบทความว่างเปล่า
-});
-
+router.get('/knowledge-base', KnowledgeBaseController.getknowledgebase);
 router.get('/search-articles', KnowledgeBaseController.searchArticles);
-
 
 
 router.post('/generate-report', authorize('GenReport'),ReportController.generateReport);

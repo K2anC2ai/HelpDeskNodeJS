@@ -9,3 +9,8 @@ exports.searchArticles = (req, res) => {
         res.render('knowledge_base', { articles });
     });
 };
+
+
+exports.getknowledgebase = (req, res) => {
+    res.render('knowledge_base', { articles: [] }); // รับคำค้นหาจาก URL query
+};
