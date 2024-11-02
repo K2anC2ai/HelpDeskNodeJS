@@ -26,8 +26,8 @@ router.get('/dashboard', dashboardController.getDashboard);
 router.get('/track-tickets', authorize('TrackTicket'),TicketController.getTicketList);
 router.get('/ticket/:ticketId', authorize('TrackTicket'),TicketController.getTicketDetails);
 
-router.get('/knowledge-base', KnowledgeBaseController.getknowledgebase);
-router.get('/search-articles', KnowledgeBaseController.searchArticles);
+router.get('/knowledge-base', authorize('knowledgeBase'),KnowledgeBaseController.getknowledgebase);
+router.get('/search-articles', authorize('knowledgeBase'),KnowledgeBaseController.searchArticles);
 
 
 router.post('/generate-report', authorize('GenReport'),ReportController.generateReport);
