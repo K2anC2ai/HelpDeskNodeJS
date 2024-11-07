@@ -14,3 +14,20 @@ exports.searchArticles = (req, res) => {
 exports.getknowledgebase = (req, res) => {
     res.render('knowledge_base', { articles: [] }); // รับคำค้นหาจาก URL query
 };
+
+
+exports.getNewArticleForm = (req, res) => {
+    res.render('new_article');
+};
+
+exports.createArticle = (req, res) => {
+    const { title, content } = req.body;
+    const createdBy = req.session.userId || null; // Optional: fetch from session if logged in
+
+    Knowledge.createArticle({ title, content, createdBy }, (err) => {
+        if (err) {
+            return res.status(500).send('Error creating article');
+        }
+        res.redirect('/knowledge-base');
+    });
+};

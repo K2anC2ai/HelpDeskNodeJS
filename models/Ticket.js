@@ -101,25 +101,68 @@ class Ticket {
     //เปลี่ยนสถานะ Ticket เป็น In Progress ตาม ticketId ที่ระบุ
     static markTicketInProgress(ticketId, callback) {
         const sql = 'UPDATE ticket SET status = ? WHERE ticketId = ?';
-        db.query(sql, ['In Progress', ticketId], callback);
+        db.query(sql, ['In Progress', ticketId], (err, result) => {
+            if (err) return callback(err);
+    
+            // ตรวจสอบจำนวนแถวที่ถูกอัปเดต
+            if (result.affectedRows === 0) {
+                // ถ้าไม่มีแถวใดถูกอัปเดต แสดงว่า ticketId นี้ไม่มีอยู่
+                return callback(null, { success: false, message: "Ticket not found." });
+            }
+    
+            // ถ้ามีการอัปเดตสำเร็จ ส่งข้อมูลสำเร็จกลับไป
+            callback(null, { success: true, message: "Ticket marked as In Progress successfully." });
+        });
     }
+    
 
     //บันทึกการแก้ไขปัญหาใน Ticket โดยเปลี่ยนสถานะเป็น Resolved และบันทึกคำตอบหรือแนวทางแก้ไขที่ได้รับจากผู้ใช้
     static resolveTicket(ticketId, solution, callback) {
         const sql = 'UPDATE ticket SET status = ?, solution = ? WHERE ticketId = ?';
-        db.query(sql, ['Resolved', solution, ticketId], callback);
+        db.query(sql, ['Resolved', solution, ticketId], (err, result) => {
+            if (err) return callback(err);
+    
+            // ตรวจสอบจำนวนแถวที่ถูกอัปเดต
+            if (result.affectedRows === 0) {
+                // ถ้าไม่มีแถวใดถูกอัปเดต แสดงว่า ticketId นี้ไม่มีอยู่
+                return callback(null, { success: false, message: "Ticket not found." });
+            }
+    
+            // ถ้ามีการอัปเดตสำเร็จ ส่งข้อมูลสำเร็จกลับไป
+            callback(null, { success: true, message: "Ticket resolved successfully." });
+        });
     }
+    
     //ดึง Ticket ทั้งหมดที่ถูกมอบหมายให้เจ้าหน้าที่ตาม userId ของผู้ที่ทำการ Assign
-    static getAssignedTickets(userId, callback) {
-        const sql = 'SELECT * FROM ticket WHERE assignedBy  = ?'; // สมมุติว่าใช้ `assignedTo` เพื่อเก็บ userId ของเจ้าหน้าที่
-        db.query(sql, [userId], callback);
-    }
+static getAssignedTickets(userId, callback) {
+    const sql = 'SELECT * FROM ticket WHERE assignedBy = ?'; // สมมุติว่าใช้ `assignedTo` เพื่อเก็บ userId ของเจ้าหน้าที่
+    db.query(sql, [userId], (err, results) => {
+        if (err) {
+            // ส่งข้อผิดพลาดกลับไปยัง callback
+            return callback(err, null);
+        }
+        // ส่งผลลัพธ์กลับไปยัง callback
+        callback(null, results);
+    });
+}
+
     //อัปเดตระดับความสำคัญ (priorityLevel) ของคิวในตาราง queue โดยใช้ queueId ที่ระบุ
     static updateQueue(queueId, priorityLevel, callback) {
         const sql = 'UPDATE queue SET priorityLevel = ? WHERE queueId = ?';
-        db.query(sql, [priorityLevel, queueId], callback);
-
+        db.query(sql, [priorityLevel, queueId], (err, result) => {
+            if (err) return callback(err);
+    
+            // ตรวจสอบจำนวนแถวที่ถูกอัปเดต
+            if (result.affectedRows === 0) {
+                // ถ้าไม่มีแถวใดถูกอัปเดต แสดงว่า queueId นี้ไม่มีอยู่
+                return callback(null, { success: false, message: "Queue not found." });
+            }
+    
+            // ถ้ามีการอัปเดตสำเร็จ ส่งข้อมูลสำเร็จกลับไป
+            callback(null, { success: true, message: "Queue priority level updated successfully." });
+        });
     }
+    
     //เรียงลำดับความสำคัญ (priorityLevel) ของทุกคิวใหม่ตามลำดับ โดยจะเริ่มจาก 1 ตามลำดับที่ต้องการเพื่อให้ระดับความสำคัญในคิวเป็นไปตามลำดับ
     static reorderPriorityLevels(callback) {
         const query = `
@@ -153,13 +196,37 @@ class Ticket {
     //อัปเดตสถานะของ Ticket ตาม ticketId ที่ระบุ
     static updateTicketStatus(ticketId, status, callback) {
         const sql = 'UPDATE ticket SET status = ? WHERE ticketId = ?';
-        db.query(sql, [status, ticketId], callback);
+        db.query(sql, [status, ticketId], (err, result) => {
+            if (err) return callback(err);
+    
+            // ตรวจสอบจำนวนแถวที่ถูกอัปเดต
+            if (result.affectedRows === 0) {
+                // ถ้าไม่มีแถวใดถูกอัปเดต แสดงว่า ticketId นี้ไม่มีอยู่
+                return callback(null, { success: false, message: "Ticket not found." });
+            }
+    
+            // ถ้ามีการอัปเดตสำเร็จ ส่งข้อมูลสำเร็จกลับไป
+            callback(null, { success: true, message: "Ticket status updated successfully." });
+        });
     }
+    
     //เปลี่ยนสถานะ Ticket เป็น Escalated ตาม ticketId ที่ระบุเพื่อแสดงว่าปัญหาถูกส่งต่อไปขั้นสูงกว่า
     static markTicketEscalated(ticketId, callback) {
         const sql = 'UPDATE ticket SET status = ? WHERE ticketId = ?';
-        db.query(sql, ['Escalated', ticketId], callback);
+        db.query(sql, ['Escalated', ticketId], (err, result) => {
+            if (err) return callback(err);
+    
+            // ตรวจสอบจำนวนแถวที่ถูกอัปเดต
+            if (result.affectedRows === 0) {
+                // ถ้าไม่มีแถวใดถูกอัปเดต แสดงว่า ticketId นี้ไม่มีอยู่
+                return callback(null, { success: false, message: "Ticket not found." });
+            }
+    
+            // ถ้ามีการอัปเดตสำเร็จ ส่งข้อมูลสำเร็จกลับไป
+            callback(null, { success: true, message: "Ticket marked as Escalated successfully." });
+        });
     }
+    
 }
 
     

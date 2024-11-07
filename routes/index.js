@@ -28,6 +28,8 @@ router.get('/ticket/:ticketId', authorize('TrackTicket'),TicketController.getTic
 
 router.get('/knowledge-base', authorize('knowledgeBase'),KnowledgeBaseController.getknowledgebase);
 router.get('/search-articles', authorize('knowledgeBase'),KnowledgeBaseController.searchArticles);
+router.get('/knowledge-base/new', authorize('knowledgeBase'),KnowledgeBaseController.getNewArticleForm);
+router.post('/knowledge-base/new', authorize('knowledgeBase'),KnowledgeBaseController.createArticle);
 
 
 router.post('/generate-report', authorize('GenReport'),ReportController.generateReport);

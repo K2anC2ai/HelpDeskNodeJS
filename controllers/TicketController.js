@@ -47,7 +47,7 @@ exports.assignTicket = (req, res) => {
 
     Ticket.assign(ticketId, assignedBy, (err, result) => {
         if (err) return res.status(500).send('Error assigning ticket');
-        res.send('Ticket assigned successfully!');
+        res.redirect('/tickets/new');
     });
 };
 
@@ -82,23 +82,39 @@ exports.startProblemSolving = (req, res) => {
     const ticketId = req.params.ticketId; // รับ ticketId จากพารามิเตอร์ URL
 
     // เปลี่ยนสถานะเป็น "In Progress"
-    Ticket.markTicketInProgress(ticketId, (err) => {
+    Ticket.markTicketInProgress(ticketId, (err, result) => { // <-- แก้ไขตรงนี้
         if (err) {
             return res.status(500).send('Error marking ticket as in progress');
         }
+
+        // เช็คว่า ticket ถูกอัปเดตสำเร็จหรือไม่
+        if (result.success) {
+            // ถ้าสำเร็จให้เปลี่ยนเส้นทางไปยังหน้าที่เหมาะสม
+            res.redirect('/tickets/assigned'); // เปลี่ยนเส้นทางหลังจากอัปเดตสำเร็จ
+        } else {
+            // หากไม่พบตั๋วที่ระบุให้แสดงข้อความผิดพลาด
+            return res.status(404).send(result.message);    
+        }
     });
 };
+
 
 
 //เปลี่ยนสถานะ Ticket เป็น Escalated โดยใช้ ticketId จาก URL และเปลี่ยนเส้นทางไปยังหน้า /tickets/assigned
 exports.escalateTicket = (req, res) => {
     const ticketId = req.params.ticketId;
 
-    Ticket.markTicketEscalated(ticketId, (err) => {
+    Ticket.markTicketEscalated(ticketId, (err, result) => {
         if (err) {
             return res.status(500).send('Error escalating ticket');
         }
-        res.redirect('/tickets/assigned');
+        if (result.success) {
+            // ถ้าสำเร็จให้เปลี่ยนเส้นทางไปยังหน้าที่เหมาะสม
+            res.redirect('/tickets/assigned'); // เปลี่ยนเส้นทางหลังจากอัปเดตสำเร็จ
+        } else {
+            // หากไม่พบตั๋วที่ระบุให้แสดงข้อความผิดพลาด
+            return res.status(404).send(result.message);    
+        }
     });
 };
 
@@ -111,6 +127,13 @@ exports.resolveTicket = (req, res) => {
     Ticket.resolveTicket(ticketId, solution, (err, result) => {
         if (err) {
             return res.status(500).send('Error resolving ticket');
+        }
+        if (result.success) {
+            // ถ้าสำเร็จให้เปลี่ยนเส้นทางไปยังหน้าที่เหมาะสม
+            res.redirect('/tickets/assigned'); // เปลี่ยนเส้นทางหลังจากอัปเดตสำเร็จ
+        } else {
+            // หากไม่พบตั๋วที่ระบุให้แสดงข้อความผิดพลาด
+            return res.status(404).send(result.message);    
         }
     });
 };
@@ -154,7 +177,7 @@ exports.updateQueue = (req, res) => {
 
     // รอให้ Promise ทั้งหมดเสร็จสิ้น
     Promise.all(updates)
-        .then(() => res.send('Queue updated successfully!'))
+        .then(() => res.redirect('/edit-queue'))
         .catch((err) => res.status(500).send('Error updating queue'));
 };
 

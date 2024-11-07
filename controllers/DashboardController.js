@@ -37,7 +37,7 @@ exports.getDashboard = (req, res) => {
             <body>
                 <h1>Access Denied</h1>
                 <p>Please log in to access this page.</p>
-                <a href="/login">Go to Login</a>
+                <a href="/">Go to Login</a>
             </body>
             </html>
         `);
@@ -45,7 +45,7 @@ exports.getDashboard = (req, res) => {
 
     User.getUserRole(userId, (err, roles) => {
         if (err || !roles.length) {
-            return res.status(403).send('Access denied');
+            return res.status(403).send('Access denied <a href="/">Go to Login</a>');
         }
 
         const roleId = roles[0].roleId; // สมมติว่าผู้ใช้มีบทบาทเดียว
@@ -60,14 +60,14 @@ exports.getDashboard = (req, res) => {
             req.session.role = roleName;
 
             // แสดงหน้าแดชบอร์ดตามบทบาท
-            if (roleName === 'User') {
+            if (roleName === 'Customer') {
                 res.render('user_index', { user: req.session });
             } else if (roleName === 'Staff') {
                 res.render('staff_index', { user: req.session });
             } else if (roleName === 'Admin') {
                 res.render('admin_index', { user: req.session });
             } else {
-                res.status(403).send('Access denied');
+                res.status(403).send('Access denied <a href="/">Go to Login</a>');
             }
         });
     });
