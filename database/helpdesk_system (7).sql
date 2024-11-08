@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 29, 2024 at 10:47 AM
+-- Generation Time: Nov 08, 2024 at 06:24 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -39,9 +39,18 @@ CREATE TABLE `chat` (
 --
 
 INSERT INTO `chat` (`chatId`, `ticketId`, `chatLog`, `createdAt`) VALUES
-(8, 55, 'หมวย: ช่วยหน่อยนะคะ', '2024-10-26 10:35:57'),
-(9, 55, 'staff: กำลังแก้ให้ครับ', '2024-10-26 10:42:50'),
-(10, 60, 'asd: asd', '2024-10-29 09:29:46');
+(13, 81, 'StaffEM: ผมอยากทราบรหัสเครื่อง pc ของคุณเพื่อแก้ไข', '2024-11-07 05:13:54'),
+(14, 81, 'USER: ผมไม่บอกหรอกคุณหาเอาเองเลยผมกลัว', '2024-11-07 05:14:27'),
+(15, 82, 'staff: เครื่อง pc ที่มีงูออกมาเครื่องไหนนะครับ', '2024-11-07 05:19:34'),
+(16, 82, 'ีuserEM: เครื่องห้อง if001 เครื่องแรกครับ', '2024-11-07 05:19:58'),
+(17, 82, 'stafff: ผมเห็นคุณเปิดปัญหาใหม่งูไม่ตายหรือครับ', '2024-11-07 05:21:23'),
+(18, 82, 'userEM: ตายแล้วครับแต่มันไข่ไว้', '2024-11-07 05:22:04'),
+(19, 83, 'staffM: งูพันอะไรครับ', '2024-11-07 08:05:38'),
+(20, 83, 'ีuserAum: งูพันท้ายนรสิงครับ', '2024-11-07 08:05:56'),
+(21, 83, 'staffM: โอเครครับ เดี๋ยวเอางูไปกินกับสุกี้นะครับ', '2024-11-07 08:06:26'),
+(22, 83, 'staffM: มีอะไรให้แก้ไขอีกครับเห็น reopen มา', '2024-11-07 08:07:20'),
+(23, 83, 'userAum: มันไข่เอาไว้ด้วยครับ ทำยังไงดี', '2024-11-07 08:07:45'),
+(24, 83, 'staffM: เดี๋ยวผมเอาไปฟักครับ ทำแกงฟัก', '2024-11-07 08:08:06');
 
 -- --------------------------------------------------------
 
@@ -62,7 +71,11 @@ CREATE TABLE `knowledgebase` (
 
 INSERT INTO `knowledgebase` (`articleId`, `title`, `content`, `createdBy`) VALUES
 (1, 'How to reset password', 'To reset your password, go to the settings page and click on \"Reset Password\".', NULL),
-(2, 'How to create a ticket', 'To create a ticket, click on \"Create Ticket\" and fill out the required fields.', NULL);
+(2, 'How to create a ticket', 'To create a ticket, click on \"Create Ticket\" and fill out the required fields.', NULL),
+(3, 'Project Description', 'asdasdasd', 12),
+(4, 'python งูฉก', 'เอาไม้ตี', 12),
+(5, 'วิธีการทำมาม่า', 'ต้มหุงนึ่ง', 11),
+(6, 'ฟหก', 'ฟหกหก', 11);
 
 -- --------------------------------------------------------
 
@@ -105,16 +118,6 @@ CREATE TABLE `queue` (
   `ticketId` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `queue`
---
-
-INSERT INTO `queue` (`queueId`, `priorityLevel`, `ticketId`) VALUES
-(18, '2', 60),
-(19, '1', 61),
-(20, '3', 62),
-(21, '4', 63);
-
 -- --------------------------------------------------------
 
 --
@@ -134,14 +137,9 @@ CREATE TABLE `report` (
 --
 
 INSERT INTO `report` (`reportId`, `reportType`, `reportData`, `generatedBy`, `generated_at`) VALUES
-(5, 'Ticket Queue', '[{\"queueId\":15,\"priorityLevel\":\"1\",\"ticketId\":57,\"userId\":12,\"description\":\"สวัสดีค่ะ/ครับ ฉันไม่แน่ใจว่าต้องตั้งค่าการแจ้งเตือนอย่างไรในระบบ ช่วยแนะนำขั้นตอนให้ฉันได้ไหมค่ะ/ครับ ขอบคุณค่ะ/ครับ!\\r\\n\\r\\n\",\"status\":\"NEW\",\"createdDate\":\"2024-10-26T10:35:01.000Z\",\"assignedBy\":null,\"solution\":null},{\"queueId\":16,\"priorityLevel\":\"2\",\"ticketId\":58,\"userId\":12,\"description\":\"สวัสดีค่ะ/ครับ ขณะนี้ฉันประสบปัญหากับระบบที่ไม่สามารถอัปโหลดเอกสารได้ รบกวนช่วยตรวจสอบให้ด้วยค่ะ/ครับ ขอบคุณค่ะ/ครับ!\",\"status\":\"NEW\",\"createdDate\":\"2024-10-26T10:35:10.000Z\",\"assignedBy\":null,\"solution\":null}]', 10, '2024-10-27 07:59:06'),
-(6, 'Ticket Status', '[{\"ticketId\":55,\"status\":\"Closed\"},{\"ticketId\":56,\"status\":\"Closed\"},{\"ticketId\":57,\"status\":\"NEW\"},{\"ticketId\":58,\"status\":\"NEW\"}]', 10, '2024-10-27 08:03:19'),
-(7, 'User Tickets', '[]', 10, '2024-10-27 08:03:21'),
-(8, 'Ticket Queue', '[{\"queueId\":15,\"priorityLevel\":\"1\",\"ticketId\":57,\"userId\":12,\"description\":\"สวัสดีค่ะ/ครับ ฉันไม่แน่ใจว่าต้องตั้งค่าการแจ้งเตือนอย่างไรในระบบ ช่วยแนะนำขั้นตอนให้ฉันได้ไหมค่ะ/ครับ ขอบคุณค่ะ/ครับ!\\r\\n\\r\\n\",\"status\":\"NEW\",\"createdDate\":\"2024-10-26T10:35:01.000Z\",\"assignedBy\":null,\"solution\":null},{\"queueId\":16,\"priorityLevel\":\"2\",\"ticketId\":58,\"userId\":12,\"description\":\"สวัสดีค่ะ/ครับ ขณะนี้ฉันประสบปัญหากับระบบที่ไม่สามารถอัปโหลดเอกสารได้ รบกวนช่วยตรวจสอบให้ด้วยค่ะ/ครับ ขอบคุณค่ะ/ครับ!\",\"status\":\"NEW\",\"createdDate\":\"2024-10-26T10:35:10.000Z\",\"assignedBy\":null,\"solution\":null}]', 10, '2024-10-27 08:04:42'),
-(9, 'Ticket Status', '[{\"ticketId\":55,\"status\":\"Closed\"},{\"ticketId\":56,\"status\":\"Closed\"},{\"ticketId\":57,\"status\":\"NEW\"},{\"ticketId\":58,\"status\":\"NEW\"}]', 10, '2024-10-27 08:04:43'),
-(10, 'Assigned Tickets', '[]', 10, '2024-10-27 08:04:44'),
-(11, 'Ticket Queue', '[{\"queueId\":15,\"priorityLevel\":\"1\",\"ticketId\":57,\"userId\":12,\"description\":\"สวัสดีค่ะ/ครับ ฉันไม่แน่ใจว่าต้องตั้งค่าการแจ้งเตือนอย่างไรในระบบ ช่วยแนะนำขั้นตอนให้ฉันได้ไหมค่ะ/ครับ ขอบคุณค่ะ/ครับ!\\r\\n\\r\\n\",\"status\":\"NEW\",\"createdDate\":\"2024-10-26T10:35:01.000Z\",\"assignedBy\":null,\"solution\":null},{\"queueId\":16,\"priorityLevel\":\"2\",\"ticketId\":58,\"userId\":12,\"description\":\"สวัสดีค่ะ/ครับ ขณะนี้ฉันประสบปัญหากับระบบที่ไม่สามารถอัปโหลดเอกสารได้ รบกวนช่วยตรวจสอบให้ด้วยค่ะ/ครับ ขอบคุณค่ะ/ครับ!\",\"status\":\"NEW\",\"createdDate\":\"2024-10-26T10:35:10.000Z\",\"assignedBy\":null,\"solution\":null}]', 10, '2024-10-27 08:07:07'),
-(12, 'Ticket Status', '[{\"ticketId\":55,\"status\":\"Closed\"},{\"ticketId\":56,\"status\":\"Closed\"},{\"ticketId\":57,\"status\":\"NEW\"},{\"ticketId\":58,\"status\":\"NEW\"}]', 10, '2024-10-27 08:07:08');
+(14, 'Ticket Queue', '[]', 10, '2024-11-07 05:27:45'),
+(15, 'Ticket Status', '[{\"ticketId\":81,\"status\":\"Closed\"},{\"ticketId\":82,\"status\":\"Closed\"}]', 10, '2024-11-07 05:27:48'),
+(16, 'Ticket Status', '[{\"ticketId\":81,\"status\":\"Closed\"},{\"ticketId\":82,\"status\":\"Closed\"},{\"ticketId\":83,\"status\":\"Closed\"}]', 10, '2024-11-07 08:09:42');
 
 -- --------------------------------------------------------
 
@@ -160,8 +158,8 @@ CREATE TABLE `role` (
 
 INSERT INTO `role` (`roleId`, `roleName`) VALUES
 (1, 'Admin'),
-(3, 'Staff'),
-(2, 'User');
+(2, 'Customer'),
+(3, 'Staff');
 
 -- --------------------------------------------------------
 
@@ -214,15 +212,9 @@ CREATE TABLE `ticket` (
 --
 
 INSERT INTO `ticket` (`ticketId`, `userId`, `description`, `status`, `createdDate`, `queueId`, `assignedBy`, `solution`) VALUES
-(55, 12, 'สวัสดีค่ะ/ครับ ทีมสนับสนุน ฉันไม่สามารถเข้าสู่ระบบบัญชีของฉันได้ เมื่อฉันพยายามล็อกอิน ฉันได้รับข้อความว่า \"ข้อมูลประจำตัวไม่ถูกต้อง\" ฉันได้รีเซ็ตรหัสผ่านหลายครั้งแล้ว แต่ยังคงประสบปัญหาอยู่ กรุณาช่วยตรวจสอบปัญหานี้ให้ฉันด้วยค่ะ/ครับ ขอบคุณมากค่ะ/ครับ!\r\n\r', 'Closed', '2024-10-26 17:34:49', NULL, 11, 'ผมรีเซ็ทให้แล้ว'),
-(56, 12, 'สวัสดีค่ะ/ครับ ฉันต้องการสอบถามสถานะของตั๋วที่ฉันได้ส่งเมื่อสัปดาห์ที่แล้ว รบกวนช่วยอัปเดตให้หน่อยค่ะ/ครับ ขอบคุณค่ะ/ครับ!\r\n\r\n', 'Closed', '2024-10-26 17:34:55', NULL, 11, 'asdasdasd'),
-(57, 12, 'สวัสดีค่ะ/ครับ ฉันไม่แน่ใจว่าต้องตั้งค่าการแจ้งเตือนอย่างไรในระบบ ช่วยแนะนำขั้นตอนให้ฉันได้ไหมค่ะ/ครับ ขอบคุณค่ะ/ครับ!\r\n\r\n', 'Closed', '2024-10-26 17:35:01', NULL, 11, 'asdasd'),
-(58, 12, 'สวัสดีค่ะ/ครับ ขณะนี้ฉันประสบปัญหากับระบบที่ไม่สามารถอัปโหลดเอกสารได้ รบกวนช่วยตรวจสอบให้ด้วยค่ะ/ครับ ขอบคุณค่ะ/ครับ!', 'Reopened', '2024-10-26 17:35:10', NULL, 11, 'asdasda'),
-(59, 12, 'sadasd', 'In Progress', '2024-10-27 19:01:09', NULL, 11, NULL),
-(60, 12, 'a', 'NEW', '2024-10-29 13:54:38', 18, NULL, NULL),
-(61, 12, 'asdasd', 'NEW', '2024-10-29 14:02:07', 19, NULL, NULL),
-(62, 12, 'asdasdasdasd', 'NEW', '2024-10-29 14:02:09', 20, NULL, NULL),
-(63, 12, 'a', 'NEW', '2024-10-29 16:29:41', 21, NULL, NULL);
+(81, 12, 'คอมพิวเตอร์ของผมโดน rick roll ช่วยด้วย', 'Closed', '2024-11-07 11:57:50', NULL, 11, 'ผมได้แก้ไขให้แล้วจากการโดน ไวรัส rickroll ลองเช็คดูนะครับ'),
+(82, 12, 'ช่วยด้วยผมใช้ภาษา python แล้วมีงูออกมาฉก', 'Closed', '2024-11-07 12:18:42', NULL, 11, 'ผมเอาไข่มันไปต้มกินแล้วครับกับมาม่า'),
+(83, 12, 'เขียน code python แล้วมีงูฉกทำยังไงดีครับ', 'Closed', '2024-11-07 15:05:08', NULL, 11, 'ผมทำการจับงูให้แล้วพร้อมเอาไปกินกับชาบู และ เอาไข่ไปฟักกินกับฟัก');
 
 -- --------------------------------------------------------
 
@@ -245,7 +237,8 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`userId`, `username`, `password`, `created_at`, `updated_at`) VALUES
 (10, 'admin', '1', '2024-10-26 10:15:49', '2024-10-26 10:15:49'),
 (11, 'staff', '1', '2024-10-26 10:16:34', '2024-10-26 10:16:34'),
-(12, 'user', '1', '2024-10-26 10:16:43', '2024-10-26 10:16:43');
+(12, 'customer', '1', '2024-10-26 10:16:43', '2024-11-07 05:12:31'),
+(13, 'Aum', '1', '2024-11-07 08:09:33', '2024-11-07 08:09:33');
 
 -- --------------------------------------------------------
 
@@ -265,7 +258,8 @@ CREATE TABLE `userroles` (
 INSERT INTO `userroles` (`userId`, `roleId`) VALUES
 (10, 1),
 (11, 3),
-(12, 2);
+(12, 2),
+(13, 2);
 
 --
 -- Indexes for dumped tables
@@ -350,13 +344,13 @@ ALTER TABLE `userroles`
 -- AUTO_INCREMENT for table `chat`
 --
 ALTER TABLE `chat`
-  MODIFY `chatId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `chatId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `knowledgebase`
 --
 ALTER TABLE `knowledgebase`
-  MODIFY `articleId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `articleId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `permission`
@@ -368,13 +362,13 @@ ALTER TABLE `permission`
 -- AUTO_INCREMENT for table `queue`
 --
 ALTER TABLE `queue`
-  MODIFY `queueId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `queueId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `report`
 --
 ALTER TABLE `report`
-  MODIFY `reportId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `reportId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `role`
@@ -386,13 +380,13 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `ticket`
 --
 ALTER TABLE `ticket`
-  MODIFY `ticketId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `ticketId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables
