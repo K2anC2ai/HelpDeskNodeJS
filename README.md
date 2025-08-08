@@ -60,6 +60,48 @@ As part of a 4-member team, I was involved in **multiple roles** including:
 4. User can monitor status via dashboard
 
 **Postcondition**: Ticket is successfully logged and ready for assignment
+## Testing Strategy
+
+A structured **Software Testing** approach was implemented to ensure the system works as expected across all key features. As part of my QA role, I designed test cases, executed manual tests, reported bugs, and verified fixes to support a high-quality release.
+
+### 🧪 Test Coverage
+
+Test cases were written based on **Use Case Descriptions** and covered both functional and non-functional requirements.
+
+#### ✅ Functional Testing Areas:
+- **User Authentication**: Login, registration, and role-based access
+- **Ticketing System**:
+  - Submit ticket (NEW)
+  - Assign queue and staff
+  - Track status (In Progress, Resolved, Closed)
+- **Queue Management**: Auto-assign & manual reassign tickets
+- **Communication Module**: Staff-user comments, status notifications
+- **Knowledge Base**: Search, view, create, and edit articles
+- **User Management**: Add, edit, delete user accounts and permissions
+
+#### 🧷 Non-Functional Testing:
+- UI responsiveness across devices
+- Input validation and error handling
+- System stability during concurrent ticket submissions
+
+### 📋 Test Artifacts
+
+- **Test Case Design**: Each use case has clearly defined test steps, expected results, and preconditions.
+- **Bug Reports**: Tracked and documented using GitHub Issues and spreadsheet logs.
+- **Test Execution**: Manual test runs were performed across multiple scenarios and user roles.
+- **Regression Testing**: Conducted after every feature addition and bug fix to ensure system integrity.
+
+### 🛠 Tools Used
+
+| Tool         | Purpose                            |
+|--------------|------------------------------------|
+| **Postman**  | API testing and endpoint validation |
+| **JIRA / Trello** | Test case planning and defect tracking |
+| **Excel/Sheets** | Manual test case documentation |
+| **Browser DevTools** | UI/console/network testing |
+| **Mochawesome (optional)** | If automation in the future |
+
+---
 
 ---
 
