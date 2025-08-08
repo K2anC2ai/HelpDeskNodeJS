@@ -95,6 +95,8 @@ The project was developed by a team of 4 members. I contributed in multiple key 
 
 This project was developed based on a solid **System Analysis & Design** foundation to ensure clarity, reliability, and long-term maintainability. The team followed standard **SDLC practices**, including comprehensive modeling to guide implementation and testing.
 
+Detailed system design document is available here: [System Design Document](./docs/system-analysis/System_Design.pdf)
+
 ### 👨‍💻 My Roles
 - **System Analyst**
 - **System Designer**
