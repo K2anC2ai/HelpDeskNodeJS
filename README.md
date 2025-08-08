@@ -22,7 +22,7 @@ The project was developed by a team of 4 members. I contributed in multiple key 
 - [Usage](#usage)
 - [Project Structure](#project-structure)
 - [System Analysis & Design](#system-analysis--design)
-- [Testing](#testing-strategy)
+- [Testing](#testing)
 - [Technologies Used](#technologies-used)
 - [License](#license)
 - [Contributing](#contributing)
@@ -136,7 +136,7 @@ Detailed system design document is available here: [System Design Document](./do
 
 ---
 
-## Testing Strategy
+## Testing
 
 To ensure a reliable and bug-free experience, we adopted a structured **Software Testing** approach — including test planning, execution, and defect reporting. As part of my QA responsibilities, I led the testing process for major system components.
 
