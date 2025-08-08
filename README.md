@@ -22,7 +22,7 @@ The project was developed by a team of 4 members. I contributed in multiple key 
 - [Usage](#usage)
 - [Project Structure](#project-structure)
 - [System Analysis & Design](#system-analysis--design)
-- [Testing Strategy](#testing-strategy)
+- [Testing](#testing-strategy)
 - [Technologies Used](#technologies-used)
 - [License](#license)
 - [Contributing](#contributing)
