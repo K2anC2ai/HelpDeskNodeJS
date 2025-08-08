@@ -1,3 +1,22 @@
+## Project Overview
+
+HelpDesk is a full-stack web application developed to streamline IT support and service request management within organizations. It enables users to report issues, track ticket status, and access a knowledge base for self-service solutions. 
+
+Built using Node.js, Express, MySQL, and EJS, the system supports role-based access, ticket queue management, internal communication between staff and users, and administrative reporting tools.
+
+This project was collaboratively developed by a 4-member team, and I contributed across multiple roles including Developer, System Analyst, System Designer, and QA.
+
+## Table of Contents
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [System Analysis & Design](#system-analysis--design)
+- [Testing Strategy](#testing-strategy)
+- [Technologies Used](#technologies-used)
+- [License](#license)
+- [Contributing](#contributing)
+
 ## System Analysis & Design
 
 This project was developed with a strong foundation in **System Analysis and Design** to ensure system reliability, scalability, and maintainability. The development followed standard SDLC practices and included detailed modeling to support system implementation and testing.
