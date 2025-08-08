@@ -1,12 +1,22 @@
+# HelpDesk Node.js Application
+
 ## Project Overview
 
-HelpDesk is a full-stack web application developed to streamline IT support and service request management within organizations. It enables users to report issues, track ticket status, and access a knowledge base for self-service solutions. 
+**HelpDesk** is a full-stack web application designed to streamline IT support and service request management within organizations. It enables users to report technical issues, track ticket statuses, and access a self-service knowledge base — all in one centralized platform.
 
-Built using Node.js, Express, MySQL, and EJS, the system supports role-based access, ticket queue management, internal communication between staff and users, and administrative reporting tools.
+Built using **Node.js**, **Express**, **MySQL**, and **EJS**, the system supports:
+- Role-based access control
+- Ticket lifecycle and queue management
+- Internal messaging between staff and users
+- Knowledge base article creation
+- Administrative reporting
 
-This project was collaboratively developed by a 4-member team, and I contributed across multiple roles including Developer, System Analyst, System Designer, and QA.
+The project was developed by a team of 4 members. I contributed in multiple key roles throughout the software development lifecycle — including **System Analyst**, **System Designer**, **Full-stack Developer**, and **Quality Assurance**.
+
+---
 
 ## Table of Contents
+
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
@@ -17,128 +27,180 @@ This project was collaboratively developed by a 4-member team, and I contributed
 - [License](#license)
 - [Contributing](#contributing)
 
+---
+
+## Features
+
+- Knowledge Base: Search, view, and create articles with solutions to common problems.
+- Ticket Management: Submit, update, and track IT support tickets.
+- User Authentication: Secure login and role-based access.
+- Queue Management: Prioritize tickets and assign to staff.
+- Internal Communication: Staff-user messaging and notifications.
+- Reporting & Analytics: Performance metrics and usage statistics.
+- Responsive Design: Accessible on multiple devices via EJS templates.
+
+---
+
+## Installation
+
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/yourusername/HelpDeskNodeJS.git
+    cd HelpDeskNodeJS
+    ```
+
+2. Install dependencies:
+    ```bash
+    npm install
+    ```
+
+3. Configure the database in `config/config.json` with your credentials.
+
+4. Run database migrations:
+    ```bash
+    npx sequelize-cli db:migrate
+    ```
+
+5. Start the server:
+    ```bash
+    npm start
+    ```
+
+6. Open your browser at `http://localhost:3000`
+
+---
+
+## Usage
+
+- Browse and search the Knowledge Base.
+- Create and manage support tickets.
+- Track ticket status and communicate with support staff.
+- Admins can manage users and view reports.
+
+---
+
+## Project Structure
+
+- `app.js`: Main server initialization and middleware setup.
+- `/config`: Database configuration files.
+- `/controllers`: Handles routing logic for tickets, users, articles.
+- `/models`: Sequelize models defining database tables.
+- `/routes`: HTTP route definitions.
+- `/views`: EJS templates for UI rendering.
+- `/public`: Static assets like CSS and JavaScript.
+
+---
+
 ## System Analysis & Design
 
-This project was developed with a strong foundation in **System Analysis and Design** to ensure system reliability, scalability, and maintainability. The development followed standard SDLC practices and included detailed modeling to support system implementation and testing.
+This project was developed based on a solid **System Analysis & Design** foundation to ensure clarity, reliability, and long-term maintainability. The team followed standard **SDLC practices**, including comprehensive modeling to guide implementation and testing.
 
-As part of a 4-member team, I was involved in **multiple roles** including:
-- **System Analyst (SA)**
+### 👨‍💻 My Roles
+- **System Analyst**
 - **System Designer**
 - **Developer**
 - **Quality Assurance (QA)**
 
 ### 🔍 Analysis Phase
 
-- **Use Case Diagram**  
-  Identified all actors (e.g., User, Staff, Admin) and their interactions with system functionalities such as ticket submission, status tracking, knowledge base browsing, and user management.
-
-- **Use Case Descriptions**  
-  Provided detailed step-by-step descriptions of system behavior for each use case.
-
-- **Screen Prototypes**  
-  Created wireframes based on use cases to visualize the UI flow and ensure alignment with user needs.
-
-- **Object Identification & Relationships**  
-  Extracted real-world entities and their relationships to support domain modeling and data design.
+- **Use Case Diagram**: Identified system actors (User, Staff, Admin) and their interactions.
+- **Use Case Descriptions**: Defined step-by-step behavior for each use case.
+- **Screen Prototypes**: Created wireframes to visualize key interfaces and user flows.
+- **Object Identification**: Extracted real-world entities for modeling relationships.
 
 ### 🧠 Design Phase
 
-- **Domain Class Diagram**  
-  Illustrated the conceptual model of entities like `Ticket`, `User`, `Article`, and `Queue`, including their relationships.
-
-- **Statechart Diagram (Ticket)**  
-  Mapped out the lifecycle of a ticket:
-  - NEW → ASSIGNED → IN_PROGRESS → RESOLVED → CLOSED
-
-- **Class Diagram with Attributes**  
-  Enhanced the domain model by adding attributes and defining class responsibilities and associations.
-
-- **Sequence Diagrams**  
-  Described the interaction between **Boundary**, **Control**, and **Entity** objects for main use cases:
+- **Domain Class Diagram**: Modeled key entities like `Ticket`, `User`, `Queue`, `Article`.
+- **Statechart Diagram (Ticket)**: Defined status transitions:  
+  `NEW → ASSIGNED → IN_PROGRESS → RESOLVED → CLOSED`
+- **Class Diagram with Attributes**: Specified class responsibilities, attributes, and associations.
+- **Sequence Diagrams**: Modeled interactions for:
   - Ticket Creation
   - Ticket Assignment
-  - Communication with User
-
-- **ER Diagram**  
-  Transformed the class model into a relational schema used in the actual database (Sequelize ORM).
-
-- **Activity Diagram**  
-  Modeled the end-to-end ticket workflow — from submission to closure.
-
----
+  - Staff–User Communication
+- **ER Diagram**: Translated the domain model into a relational schema using Sequelize ORM.
+- **Activity Diagram**: Visualized the end-to-end ticket processing workflow.
 
 ### ✅ Example Use Case: Ticket Submission
 
-**Actor**: User  
-**Precondition**: User is logged in  
+- **Actor**: User  
+- **Precondition**: User is authenticated  
+- **Main Flow**:
+  1. User submits ticket via web form
+  2. System creates a ticket with status `NEW`
+  3. Ticket is queued for processing
+  4. User monitors status via dashboard  
+- **Postcondition**: Ticket is successfully logged and ready for assignment
 
-**Main Flow**:
-1. User submits ticket through web form
-2. System creates a Ticket with status = `NEW`
-3. Ticket is added to a processing queue
-4. User can monitor status via dashboard
+---
 
-**Postcondition**: Ticket is successfully logged and ready for assignment
 ## Testing Strategy
 
-A structured **Software Testing** approach was implemented to ensure the system works as expected across all key features. As part of my QA role, I designed test cases, executed manual tests, reported bugs, and verified fixes to support a high-quality release.
+To ensure a reliable and bug-free experience, we adopted a structured **Software Testing** approach — including test planning, execution, and defect reporting. As part of my QA responsibilities, I led the testing process for major system components.
 
 ### 🧪 Test Coverage
 
-Test cases were written based on **Use Case Descriptions** and covered both functional and non-functional requirements.
+#### ✅ Functional Testing
+- **Authentication**: Login, registration, and role-based access
+- **Ticket System**:
+  - Ticket submission, status tracking
+  - Queue assignment (auto/manual)
+- **Knowledge Base**: Search, add, edit, delete articles
+- **User Management**: Role-based access, CRUD operations
+- **Internal Communication**: Comments and notifications between staff and users
 
-#### ✅ Functional Testing Areas:
-- **User Authentication**: Login, registration, and role-based access
-- **Ticketing System**:
-  - Submit ticket (NEW)
-  - Assign queue and staff
-  - Track status (In Progress, Resolved, Closed)
-- **Queue Management**: Auto-assign & manual reassign tickets
-- **Communication Module**: Staff-user comments, status notifications
-- **Knowledge Base**: Search, view, create, and edit articles
-- **User Management**: Add, edit, delete user accounts and permissions
-
-#### 🧷 Non-Functional Testing:
-- UI responsiveness across devices
-- Input validation and error handling
-- System stability during concurrent ticket submissions
+#### 🧷 Non-Functional Testing
+- Responsive UI across devices
+- Robust error handling and validation
+- System stability under concurrent usage
 
 ### 📋 Test Artifacts
 
-- **Test Case Design**: Each use case has clearly defined test steps, expected results, and preconditions.
-- **Bug Reports**: Tracked and documented using GitHub Issues and spreadsheet logs.
-- **Test Execution**: Manual test runs were performed across multiple scenarios and user roles.
-- **Regression Testing**: Conducted after every feature addition and bug fix to ensure system integrity.
+- **Test Case Documents**: Mapped directly from use cases
+- **Manual Testing Reports**: Logged in spreadsheets and GitHub Issues
+- **Bug Tracking**: Real-time collaboration on fixing and retesting
+- **Regression Testing**: Run after every major update
 
 ### 🛠 Tools Used
 
-| Tool         | Purpose                            |
-|--------------|------------------------------------|
-| **Postman**  | API testing and endpoint validation |
-| **JIRA / Trello** | Test case planning and defect tracking |
-| **Excel/Sheets** | Manual test case documentation |
-| **Browser DevTools** | UI/console/network testing |
-| **Mochawesome (optional)** | If automation in the future |
+| Tool             | Purpose                            |
+|------------------|------------------------------------|
+| **Postman**       | API testing                        |
+| **JIRA / Trello** | Test case tracking and bug logging |
+| **Excel / Sheets**| Manual test case documentation     |
+| **Browser DevTools** | UI/Console/Network testing     |
+| **Mochawesome** *(Optional)* | Future test automation readiness |
 
 ---
 
+## Technologies Used
+
+- **Node.js & Express** – Backend API
+- **MySQL & Sequelize** – Relational database and ORM
+- **EJS** – Server-side rendering engine
+- **Bootstrap** – Front-end styling
+- **Draw.io / Lucidchart** – UML diagrams
+- **Figma / Balsamiq** – UI prototyping
+- **Postman** – API testing
+- **Git & GitHub** – Version control
+
 ---
 
-### 🛠 Tools Used
+## License
 
-- **Draw.io / Lucidchart** – Diagramming (UML)
-- **Figma / Balsamiq** – Screen prototyping
-- **Sequelize ORM** – Mapping models to relational DB
-- **Markdown & Docs** – Use case documentation
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
 
-### 👥 Team Collaboration
+## Contributing
 
-| Role | Responsibility |
-|------|----------------|
-| **System Analyst / Designer** | Led requirements analysis and UML modeling |
-| **Developer** | Built backend features like ticketing, queue, and user system |
-| **QA** | Designed and executed test cases to ensure quality |
+Contributions are welcome! To contribute:
 
-> All diagrams and documentation are available in the `/docs/system-analysis/` folder.
+1. Fork the repository  
+2. Create a feature branch (`git checkout -b feature/YourFeature`)  
+3. Commit your changes (`git commit -m 'Add feature'`)  
+4. Push to the branch (`git push origin feature/YourFeature`)  
+5. Open a pull request  
+
+---
+
